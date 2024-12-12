@@ -7,3 +7,4 @@ hide: true
 menu: nav/home.html
 ---
 
+<h1>Test</h1>
