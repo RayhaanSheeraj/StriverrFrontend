@@ -7,7 +7,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
 ---
 
 <div class="sidebar">
-    <a href="//{{site.baseurl}}/Striver/striver-achievements" class="sidebar-btn">Back to Achievements</a>
+    <a href="/StriverrFrontend/Striver/striver-achievement" class="sidebar-btn">Back to Achievements</a>
 </div>
 <div id="main-content">
     <div id="chatPanel">
