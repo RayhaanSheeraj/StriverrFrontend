@@ -1,6 +1,6 @@
 import glob
-from nbconvert import MarkdownExporter
 from nbconvert.utils.exceptions import ConversionException
+from nbconvert.exporters import MarkdownExporter
 import os
 import nbformat
 import yaml
