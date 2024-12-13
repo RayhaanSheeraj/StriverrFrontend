@@ -78,7 +78,7 @@ author: Hithin
                 <li>This chat bot is powered by Gemini AI</li>
                 <li>Continue sharing achievements or ask for guidance on specific topics.</li>
             </ul>
-            <span style="color: green;">It is an honor to get to hear about you</span>
+            <span style="color: cyan;">It is an honor to get to hear about you</span>
         </div>
     </div>
 
