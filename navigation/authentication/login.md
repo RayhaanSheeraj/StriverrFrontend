@@ -121,7 +121,7 @@ show_reading_time: false
             method: "POST",
             cache: "no-cache",
             body: {
-                name: document.getElementById("name").value
+                name: document.getElementById("name").value,
                 uid: document.getElementById("uid").value,
                 password: document.getElementById("password").value,
             }
