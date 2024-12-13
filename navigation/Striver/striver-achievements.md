@@ -331,7 +331,7 @@ Share your achievements with others!
 
     async function fetchChannels() {
         try {
-            const groupName = 'Reality Room';
+            const groupName = 'Striver';
             const responseData = {
                 group_name: groupName,
             };
