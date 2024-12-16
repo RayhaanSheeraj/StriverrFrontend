@@ -309,15 +309,13 @@ Share your achievements with others!
     //         reader.readAsDataURL(file);
     //     });
     // }
-</script>
-
 <script type="module">
     import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
     const container = document.getElementById("channels");
 
     function openChatRoom(button) {
         const channelId = button.getAttribute("id");
-        window.location.href = `{{site.baseurl}}/Striver/striver-achievements?channelId=${channelId}`;
+        window.location.href = `{{site.baseurl}}/create_and_compete/realityroom?channelId=${channelId}`;
     }
 
     async function fetchUser() {
@@ -331,7 +329,7 @@ Share your achievements with others!
 
     async function fetchChannels() {
         try {
-            const groupName = 'Striver';
+            const groupName = 'Reality Room';
             const responseData = {
                 group_name: groupName,
             };
@@ -390,22 +388,18 @@ Share your achievements with others!
             console.error('Error fetching channels:', error);
         }
     }
-
     document.getElementById('channelForm').addEventListener('submit', async function(event) {
         event.preventDefault();
-
         const title = document.getElementById('title').value;
         const content = document.getElementById('textArea').value;
         const group_id = 9;
-
         const channelData = {
             name: title,
             group_id: group_id,
             attributes: {"content": content}
         };
-
         try {
-            const response = await fetch(`${pythonURI}/api/channels`, {
+            const response = await fetch(`${pythonURI}/api/channel`, {
                 ...fetchOptions,
                 method: 'POST',
                 headers: {
@@ -413,11 +407,9 @@ Share your achievements with others!
                 },
                 body: JSON.stringify(channelData)
             });
-
             if (!response.ok) {
                 throw new Error('Failed to add channel: ' + response.statusText);
             }
-
             fetchChannels();
             document.getElementById('channelForm').reset();
         } catch (error) {
@@ -425,7 +417,6 @@ Share your achievements with others!
             alert('Error adding channel: ' + error.message);
         }
     });
-
     fetchChannels();
 </script>
 <div class="members-section">
