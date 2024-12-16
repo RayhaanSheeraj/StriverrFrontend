@@ -405,7 +405,7 @@ Share your achievements with others!
         };
 
         try {
-            const response = await fetch(`${pythonURI}/api/channel`, {
+            const response = await fetch(`${pythonURI}/api/channels`, {
                 ...fetchOptions,
                 method: 'POST',
                 headers: {
