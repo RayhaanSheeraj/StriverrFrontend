@@ -6,7 +6,11 @@ search_exclude: true
 show_reading_time: false 
 ---
 
+<br>
+
 <style>
+
+
 .login-container {
     display: flex;
     justify-content: space-between;
@@ -16,10 +20,10 @@ show_reading_time: false
 .login-card {
     margin-top: 0; /* remove the top margin */
     width: 45%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border: 4px solid #07027d;
+    border-radius: 50px;
+    padding: 40px;
+    box-shadow: 10px 10px 25px rgba(23, 7, 201, 1);
     margin-bottom: 20px;
     overflow-x: auto; /* Enable horizontal scrolling */
 }
@@ -31,10 +35,10 @@ show_reading_time: false
 .signup-card {
     margin-top: 0; /* remove the top margin */
     width: 45%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    border: 4px solid #07027d;
+    border-radius: 50px;
+    padding: 40px;
+    box-shadow: 10px 10px 25px rgba(23, 7, 201, 1);
     margin-bottom: 20px;
     overflow-x: auto; /* Enable horizontal scrolling */
 }
