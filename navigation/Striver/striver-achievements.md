@@ -348,3 +348,120 @@ Share your achievements with others!
     margin: 10px 0;
 }
 </style>
+<script type="module">
+    import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
+    const container = document.getElementById("channels");
+
+    function openChatRoom(button) {
+        const channelId = button.getAttribute("id");
+        window.location.href = `{{site.baseurl}}/create_and_compete/realityroom?channelId=${channelId}`;
+    }
+
+    async function fetchUser() {
+        const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+        const user = await response.json();
+        console.log(user);
+        return user;
+    }
+
+    const user = fetchUser();
+
+    async function fetchChannels() {
+        try {
+            const groupName = 'Reality Room';
+            const responseData = {
+                group_name: groupName,
+            };
+            // add filter to get only messages from this channel
+            const response = await fetch(`${pythonURI}/api/channels/filter`, {
+                ...fetchOptions,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(responseData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch channels: ' + response.statusText);
+            }
+            const channels = await response.json();
+            container.innerHTML = "";
+
+            channels.forEach(channel => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+
+                const title = document.createElement("h3");
+                title.classList.add("card-title");
+                title.textContent = channel.name;
+
+                // const imageBox = document.createElement("div");
+                // title.classList.add("image-box");
+
+                const description = document.createElement("p");
+                description.classList.add("card-description");
+                description.textContent = channel.attributes["content"];
+
+                const deleteButton = document.createElement("button");
+                deleteButton.classList.add("delete-button");
+                deleteButton.textContent = "Delete";
+
+                const commentButton = document.createElement("button");
+                commentButton.classList.add("comment-button");
+                commentButton.textContent = "Comment";
+                commentButton.setAttribute("id", channel.id);
+
+                commentButton.onclick = function () {
+                    openChatRoom(commentButton);
+                };
+
+                card.appendChild(title);
+                card.appendChild(description);
+                card.appendChild(deleteButton);
+                card.appendChild(commentButton);
+
+                container.appendChild(card);
+            });
+        } catch (error) {
+            console.error('Error fetching channels:', error);
+        }
+    }
+
+    document.getElementById('channelForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('textArea').value;
+        const group_id = 9;
+
+        const channelData = {
+            name: title,
+            group_id: group_id,
+            attributes: {"content": content}
+        };
+
+        try {
+            const response = await fetch(`${pythonURI}/api/channel`, {
+                ...fetchOptions,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(channelData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add channel: ' + response.statusText);
+            }
+
+            fetchChannels();
+            document.getElementById('channelForm').reset();
+        } catch (error) {
+            console.error('Error adding channel:', error);
+            alert('Error adding channel: ' + error.message);
+        }
+    });
+
+    fetchChannels();
+</script>
