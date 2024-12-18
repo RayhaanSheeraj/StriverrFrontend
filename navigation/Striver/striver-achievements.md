@@ -264,6 +264,9 @@ Share your achievements with others!
     }
 </style>
 
+
+
+
 <script type="module">
     // this is for the images
     // import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
@@ -406,6 +409,14 @@ Share your achievements with others!
                 const deleteButton = document.createElement("button");
                 deleteButton.classList.add("delete-button");
                 deleteButton.textContent = "Delete";
+
+                const likeButton = document.createElement("button");
+                likeButton.classList.add("like-button");
+                likeButton.textContent = "👍";
+
+                const dislikeButton = document.createElement("button");
+                dislikeButton.classList.add("dislike-button");
+                dislikeButton.textContent = "👎";
 
                 const commentButton = document.createElement("button");
                 commentButton.classList.add("comment-button");
