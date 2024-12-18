@@ -431,6 +431,8 @@ Share your achievements with others!
                 card.appendChild(description);
                 card.appendChild(deleteButton);
                 card.appendChild(commentButton);
+                card.appendChild(dislikeButton);
+                card.appendChild(likeButton);
 
                 container.appendChild(card);
             });
