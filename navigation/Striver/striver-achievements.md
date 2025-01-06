@@ -357,7 +357,7 @@ Share your achievements with others!
 
     function openChatRoom(button) {
         const channelId = button.getAttribute("id");
-        window.location.href = `{{site.baseurl}}/create_and_compete/realityroom?channelId=${channelId}`;
+        window.location.href = `{{site.baseurl}}/Striver/striver-achievements?channelId=${channelId}`;
     }
 
     async function fetchUser() {
@@ -371,7 +371,7 @@ Share your achievements with others!
 
     async function fetchChannels() {
         try {
-            const groupName = 'Reality Room';
+            const groupName = 'Striver';
             const responseData = {
                 group_name: groupName,
             };
