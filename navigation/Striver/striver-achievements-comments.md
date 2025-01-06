@@ -19,6 +19,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
             <input placeholder="Enter message to send:" type="text" id="messageBox" name="message">
         </form>
     </div>
+
 <style>
     .sidebar {
     position: fixed;
@@ -60,6 +61,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     transform: scale(1.05); /* Slight zoom on hover */
 }
 </style>
+
 <style>
     table, th, td {
         border: 1px solid black;
@@ -152,4 +154,49 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     input[type="file"] {
         display: none;
     }
-    </style>
+</style>
+
+<script>
+    let commentCounter = 0; 
+    // Simulate adding a comment
+    function addComment(content) {
+        commentCounter++;
+        const commentId = `comment-${commentCounter}`;
+        const commentDiv = document.createElement("div");
+        commentDiv.id = commentId;
+        commentDiv.className = "message-bubble";
+        commentDiv.innerHTML = `
+            <p>${content}</p>
+            <a href="#${commentId}" onclick="scrollToComment('${commentId}')">Link to this comment</a>
+        `;
+        document.getElementById("outputDiv").appendChild(commentDiv);
+
+        // Dynamically generate a link for each comment
+        generateCommentLink(commentId);
+    }
+
+    // Function to generate links for each comment
+    function generateCommentLink(commentId) {
+        const linkDiv = document.createElement("div");
+        linkDiv.className = "comment-link";
+        linkDiv.innerHTML = `
+            <a href="#${commentId}" onclick="scrollToComment('${commentId}')">Go to Comment ${commentId}</a>
+        `;
+        document.getElementById("outputDiv").appendChild(linkDiv);
+    }
+
+    // Scroll to the linked comment when the link is clicked
+    function scrollToComment(commentId) {
+        const commentElement = document.getElementById(commentId);
+        if (commentElement) {
+            commentElement.scrollIntoView({ behavior: "smooth" });
+        }
+    }
+
+    // Example: Adding comments dynamically
+    document.addEventListener("DOMContentLoaded", () => {
+        addComment("This is the first comment.");
+        addComment("This is the second comment.");
+        addComment("Another comment to test links.");
+    });
+</script>

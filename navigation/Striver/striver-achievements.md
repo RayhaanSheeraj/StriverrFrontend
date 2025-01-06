@@ -264,6 +264,9 @@ Share your achievements with others!
     }
 </style>
 
+
+
+
 <script type="module">
     // this is for the images
     // import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
@@ -309,6 +312,45 @@ Share your achievements with others!
     //         reader.readAsDataURL(file);
     //     });
     // }
+<div class="members-section">
+    <h3 style="color:cyan;">Members</h3>
+    <ul>
+        <li>⚪ John</li>
+        <li>⚪ Mary</li>
+        <li>⚪ Jack</li>
+        <li>⚪ Bob</li>
+        <li>⚪ Matt</li>
+        <li>⚪ Mark</li>
+        <li>⚪ Juan</li>
+        <li>⚪ Travis</li>
+    </ul>
+</div>
+<style>
+/* Members Section */
+.members-section {
+    background-color: #111;
+    color: white;
+    width: 200px; /* Set width for the sidebar */
+    position: fixed; /* Fix it to the side */
+    right: 0;
+    top: 0;
+    bottom: 0; /* Stretch it vertically */
+    padding-top: 20px; /* Add padding from top */
+    text-align: left; /* Align text to the left */
+    z-index: 10; /* Ensure it stays above other elements */
+}
+.members-section h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.members-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+.members-section li {
+    margin: 10px 0;
+}
+</style>
 <script type="module">
     import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
     const container = document.getElementById("channels");
@@ -368,6 +410,14 @@ Share your achievements with others!
                 deleteButton.classList.add("delete-button");
                 deleteButton.textContent = "Delete";
 
+                const likeButton = document.createElement("button");
+                likeButton.classList.add("like-button");
+                likeButton.textContent = "👍";
+
+                const dislikeButton = document.createElement("button");
+                dislikeButton.classList.add("dislike-button");
+                dislikeButton.textContent = "👎";
+
                 const commentButton = document.createElement("button");
                 commentButton.classList.add("comment-button");
                 commentButton.textContent = "Comment";
@@ -381,6 +431,8 @@ Share your achievements with others!
                 card.appendChild(description);
                 card.appendChild(deleteButton);
                 card.appendChild(commentButton);
+                card.appendChild(dislikeButton);
+                card.appendChild(likeButton);
 
                 container.appendChild(card);
             });
@@ -388,16 +440,20 @@ Share your achievements with others!
             console.error('Error fetching channels:', error);
         }
     }
+
     document.getElementById('channelForm').addEventListener('submit', async function(event) {
         event.preventDefault();
+
         const title = document.getElementById('title').value;
         const content = document.getElementById('textArea').value;
         const group_id = 9;
+
         const channelData = {
             name: title,
             group_id: group_id,
             attributes: {"content": content}
         };
+
         try {
             const response = await fetch(`${pythonURI}/api/channel`, {
                 ...fetchOptions,
@@ -407,9 +463,11 @@ Share your achievements with others!
                 },
                 body: JSON.stringify(channelData)
             });
+
             if (!response.ok) {
                 throw new Error('Failed to add channel: ' + response.statusText);
             }
+
             fetchChannels();
             document.getElementById('channelForm').reset();
         } catch (error) {
@@ -417,44 +475,6 @@ Share your achievements with others!
             alert('Error adding channel: ' + error.message);
         }
     });
+
     fetchChannels();
 </script>
-<div class="members-section">
-    <h3 style="color:cyan;">Members</h3>
-    <ul>
-        <li>⚪ John</li>
-        <li>⚪ Mary</li>
-        <li>⚪ Jack</li>
-        <li>⚪ Bob</li>
-        <li>⚪ Matt</li>
-        <li>⚪ Mark</li>
-        <li>⚪ Juan</li>
-        <li>⚪ Travis</li>
-    </ul>
-</div>
-<style>
-/* Members Section */
-.members-section {
-    background-color: #111;
-    color: white;
-    width: 200px; /* Set width for the sidebar */
-    position: fixed; /* Fix it to the side */
-    right: 0;
-    top: 0;
-    bottom: 0; /* Stretch it vertically */
-    padding-top: 20px; /* Add padding from top */
-    text-align: left; /* Align text to the left */
-    z-index: 10; /* Ensure it stays above other elements */
-}
-.members-section h3 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.members-section ul {
-    list-style-type: none;
-    padding: 0;
-}
-.members-section li {
-    margin: 10px 0;
-}
-</style>
