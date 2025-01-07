@@ -1,37 +1,155 @@
 ---
 layout: post
 title: Profile Settings
-permalink: /profile
+permalink: /Striver/striver-profile
 menu: nav/home.html
 search_exclude: true
 show_reading_time: false
 ---
+
+<div class="sidebar">
+    <a href="/StriverrFrontend/Striver/striver-achievements" class="sidebar-btn">⭐️ Achievements</a>
+    <a href="/StriverrFrontend/Striver/striver-challenges" class="sidebar-btn">📉 Challenges</a>
+    <a href="/StriverrFrontend/Striver/striver-ai" class="sidebar-btn">🤖 AI</a>
+    <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
+    <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
+    <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
+</div>
+
+<style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 180px;
+        height: 100%;
+        background-color: #121212 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+        color: white;
+        border-right: 1px solid gray;
+    }
+    .sidebar-btn {
+        background-color: #121212;
+        color: white !important;
+        border: 2px solid cyan;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        width: 160px;
+        text-align: center;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .bottom-btn {
+        margin-top: auto; 
+    }
+
+    .profile-container {
+        background-color: #00d1e9;
+        border-radius: 10px;
+        padding: 40px;
+        width: 1000px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .profile-container label {
+        display: block;
+        font-weight: bold;
+        margin-top: 10px;
+        color: #000;
+    }
+
+    .profile-container input[type="text"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #000;
+        color: #fff;
+    }
+
+    .profile-container input[type="text"]::placeholder {
+        color: #888;
+    }
+
+    .profile-container input[type="file"] {
+        display: none;
+    }
+
+    .file-icon {
+        background-color: #6ec6ff;
+        color: #000;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .file-icon:hover {
+        background-color: #5ab2e1;
+    }
+
+   .image-container {
+    width: 100%;
+    height: 250px; /* Increased height for larger gray box */
+    margin-top: 15px;
+    background-color: #e0f7fa;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #000;
+}
+
+    .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    #profile-message {
+        margin-top: 10px;
+        font-size: 14px;
+        color: red;
+    }
+</style>
+
 <div class="profile-container">
- <div class="card">
-   <form>
-     <div>
-       <label for="newUid">Enter New UID:</label>
-       <input type="text" id="newUid" placeholder="New UID">
-     </div>
-     <div>
-       <label for="newName">Enter New Name:</label>
-       <input type="text" id="newName" placeholder="New Name">
-     </div>
-      <div>
-       <label for="newPassword">Enter New Password:</label>
-       <input type="text" id="newPassword" placeholder="New Password">
-     </div>
-     <br>
-     <br>
-     <label for="profilePicture" class="file-icon"> Upload Profile Picture <i class="fas fa-upload"></i> <!-- Replace this with your desired icon -->
-     </label>
-     <input type="file" id="profilePicture" accept="image/*" onchange="saveProfilePicture()">
-     <div class="image-container" id="profileImageBox">
-         <!-- Profile picture will be displayed here -->
-     </div>
-     <p id="profile-message" style="color: red;"></p>
-   </form>
- </div>
+    <div class="card">
+        <form>
+            <div>
+                <label for="newUid">Enter New ID:</label>
+                <input type="text" id="newUid" placeholder="New UID">
+            </div>
+            <div>
+                <label for="newName">Enter New Name:</label>
+                <input type="text" id="newName" placeholder="New Name">
+            </div>
+            <div>
+                <label for="newPassword">Enter New Password:</label>
+                <input type="text" id="newPassword" placeholder="New Password">
+            </div>
+            <br>
+            <br>
+            <label for="profilePicture" class="file-icon">Upload Profile Picture <i class="fas fa-upload"></i></label>
+            <input type="file" id="profilePicture" accept="image/*" onchange="saveProfilePicture()">
+            <div class="image-container" id="profileImageBox">
+                <p>No profile picture available.</p>
+            </div>
+            <p id="profile-message"></p>
+        </form>
+    </div>
 </div>
 
 <script type="module">
