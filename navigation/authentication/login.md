@@ -9,8 +9,6 @@ show_reading_time: false
 <br>
 
 <style>
-
-
 .login-container {
     display: flex;
     justify-content: space-between;
@@ -46,7 +44,6 @@ show_reading_time: false
 .signup-card h1 {
     margin-bottom: 20px;
 }
-
 </style>
 
 <div class="login-container">
@@ -117,55 +114,57 @@ show_reading_time: false
                 password: document.getElementById("password").value,
             }
         };
-        login(options);
+        login(options).catch(error => {
+            console.error("Login Error:", error);
+            document.getElementById("message").textContent = `Login Error: ${error.message}`;
+        });
     }
 
     // Function to handle signup
     window.signup = function() {
-    const signupButton = document.querySelector(".signup-card button");
+        const signupButton = document.querySelector(".signup-card button");
 
-    // Disable the button and change its color
-    signupButton.disabled = true;
-    signupButton.style.backgroundColor = '#d3d3d3'; // Light gray to indicate disabled state
+        // Disable the button and change its color
+        signupButton.disabled = true;
+        signupButton.style.backgroundColor = '#d3d3d3'; // Light gray to indicate disabled state
 
-    const signupOptions = {
-        URL: `${pythonURI}/api/user`,
-        method: "POST",
-        cache: "no-cache",
-        body: {
-            name: document.getElementById("name").value,
-            uid: document.getElementById("signupUid").value,
-            password: document.getElementById("signupPassword").value
-        }
-    };
+        const signupOptions = {
+            URL: `${pythonURI}/api/user`,
+            method: "POST",
+            cache: "no-cache",
+            body: {
+                name: document.getElementById("name").value,
+                uid: document.getElementById("signupUid").value,
+                password: document.getElementById("signupPassword").value
+            }
+        };
 
-    fetch(signupOptions.URL, {
-        method: signupOptions.method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(signupOptions.body)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Signup failed: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        document.getElementById("signupMessage").textContent = "Signup successful!";
-        // Optionally redirect to login page or handle as needed
-        // window.location.href = '{{site.baseurl}}/profile';
-    })
-    .catch(error => {
-        console.error("Signup Error:", error);
-        document.getElementById("signupMessage").textContent = `Signup Error: ${error.message}`;
-        // Re-enable the button if there is an error
-        signupButton.disabled = false;
-        signupButton.style.backgroundColor = ''; // Reset to default color
-    });
-}
-
+        fetch(signupOptions.URL, {
+            method: signupOptions.method,
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(signupOptions.body)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Signup failed: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById("signupMessage").textContent = "Signup successful!";
+            // Optionally redirect to login page or handle as needed
+            // window.location.href = '{{site.baseurl}}/profile';
+        })
+        .catch(error => {
+            console.error("Signup Error:", error);
+            document.getElementById("signupMessage").textContent = `Signup Error: ${error.message}`;
+            // Re-enable the button if there is an error
+            signupButton.disabled = false;
+            signupButton.style.backgroundColor = ''; // Reset to default color
+        });
+    }
 
     // Function to fetch and display Python data
     function pythonDatabase() {
