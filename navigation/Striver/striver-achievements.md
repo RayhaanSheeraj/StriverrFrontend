@@ -38,7 +38,7 @@ Share your achievements with others!
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        color: #ECF0F1;
+        color:rgb(0, 0, 0);
     }
     .form-container label {
         margin-bottom: 5px;
