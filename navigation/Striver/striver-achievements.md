@@ -62,11 +62,30 @@ Share your achievements with others!
 
 <div class="container">
     <div class="form-container">
+        <h2>Select Group and Channel</h2>
+        <form id="selectionForm">
+            <label for="group_id">Group:</label>
+            <select id="group_id" name="group_id" required>
+                <option value="">Select a group</option>
+            </select>
+            <label for="channel_id">Channel:</label>
+            <select id="channel_id" name="channel_id" required>
+                <option value="">Select a channel</option>
+            </select>
+            <button type="submit">Select</button>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-container">
         <h2>Add New Post</h2>
         <form id="postForm">
-            <input type="text" id="title" name="title" placeholder="Enter Title Here" required>
-            <textarea id="comment" name="comment" placeholder="Post Here" required></textarea>
-            <button type="submit">Post</button>
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            <button type="submit">Add Post</button>
         </form>
     </div>
 </div>
