@@ -64,11 +64,9 @@ Share your achievements with others!
     <div class="form-container">
         <h2>Add New Post</h2>
         <form id="postForm">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="comment">Comment:</label>
-            <textarea id="comment" name="comment" required></textarea>
-            <button type="submit">Add Post</button>
+            <input type="text" id="title" name="title" placeholder="Enter Title Here" required>
+            <textarea id="comment" name="comment" placeholder="Post Here" required></textarea>
+            <button type="submit">Post</button>
         </form>
     </div>
 </div>
