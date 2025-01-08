@@ -2,7 +2,7 @@
 layout: base
 title: Striver Profile
 search_exclude: true
-permalink: /Striver/striver-profile
+permalink: 
 author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
 ---
 

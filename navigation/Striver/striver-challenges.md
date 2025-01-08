@@ -107,7 +107,6 @@ Share your challenges with others!
         width: 100%;
         /* padding-left: 180px; */
     }
-
     .friends-container {
         display: flex;
         overflow-x: auto; /* horizontal scrolling */
@@ -119,7 +118,6 @@ Share your challenges with others!
         scrollbar-color: #ccc transparent; /* Color for scrollbar */
         width: 750px;
     }
-
     .friend {
         display: flex;
         flex-direction: column;
@@ -129,7 +127,6 @@ Share your challenges with others!
         text-align: center;
         font-family: Arial, sans-serif;
     }
-
     .profile-pic {
         width: 60px;
         height: 60px;
@@ -137,19 +134,16 @@ Share your challenges with others!
         overflow: hidden;
         border: 2px solid #ddd;
     }
-
     .profile-pic img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
-
     .friend p {
         margin: 5px 0 0;
         font-size: 14px;
         color: #333;
     }
-
     .live-badge {
         position: absolute;
         top: -5px;
@@ -161,7 +155,6 @@ Share your challenges with others!
         border-radius: 12px;
         font-weight: bold;
     }
-
     /* Form Styling */
     .form-container {
         padding: 20px;
@@ -171,13 +164,11 @@ Share your challenges with others!
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
     }
-
     .form-inputs {
         display: flex;
         gap: 10px;
         align-items: center;
     }
-
     #title {
         flex: 1;
         padding: 12px;
@@ -185,7 +176,6 @@ Share your challenges with others!
         border: 1px solid #ddd;
         font-size: 16px;
     }
-
     .file-button {
         padding: 10px;
         background-color: #333;
@@ -200,7 +190,6 @@ Share your challenges with others!
         align-items: center;
         justify-content: center;
     }
-
     #textArea {
         width: 100%;
         padding: 12px;
@@ -211,7 +200,6 @@ Share your challenges with others!
         resize: none;
         height: 100px;
     }
-
     button[type="submit"] {
         align-self: flex-start;
         padding: 10px 20px;
@@ -225,11 +213,9 @@ Share your challenges with others!
         margin-top: 10px;
         transition: background-color 0.2s ease;
     }
-
     button[type="submit"]:hover {
         background-color: #1a91da;
     }
-
     /* Channels Container */
     #channels {
         display: flex;
@@ -238,7 +224,6 @@ Share your challenges with others!
         gap: 20px;
         padding-top: 20px;
     }
-
     /* Post Cards Styling */
     .card {
         width: calc(50% - 20px);
@@ -249,19 +234,16 @@ Share your challenges with others!
         border-radius: 8px;
         text-align: left;
     }
-
     .card-title {
         font-size: 1.2em;
         font-weight: bold;
         color: #333;
     }
-
     .card-description {
         color: #555;
         font-size: 1em;
         margin-top: 10px;
     }
-
     .delete-button, .comment-button {
         background-color: #ff4d4d;
         color: white;
@@ -274,7 +256,6 @@ Share your challenges with others!
         transition: background-color 0.3s ease;
         margin-right: 5px;
     }
-
     .delete-button:hover, .comment-button:hover {
         background-color: #ff1a1a;
     }
@@ -458,4 +439,3 @@ Share your challenges with others!
 
     fetchChannels();
 </script>
-
