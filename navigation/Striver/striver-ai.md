@@ -380,6 +380,20 @@ author: Hithin
         document.getElementById('outputDiv').appendChild(messageElement);
     }
 
+    const storedMessage = localStorage.getItem("storedMessage");
+    if(storedMessage) {
+        console.log("I tried", storedMessage);
+
+        const aiMessageElement = document.createElement('p');
+        aiMessageElement.classList.add('ai-bubble');
+        aiMessageElement.textContent = storedMessage;
+        document.getElementById('outputDiv').appendChild(aiMessageElement);
+        incrementMessageCount();
+        
+        const messagesDiv = document.getElementById('outputDiv');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
     // Chat functionality
     document.getElementById('messageBox').addEventListener('keypress', async function(event) {
     if (event.key === 'Enter') {
@@ -398,6 +412,9 @@ author: Hithin
         // TODO: Add response delay.
         setTimeout(async () => {
             const aiResponse = await sendToGeminiAPI(userMessage);
+
+            localStorage.setItem("storedMessage", aiResponse);
+            console.log(aiResponse);
 
             const aiMessageElement = document.createElement('p');
             aiMessageElement.classList.add('ai-bubble');
