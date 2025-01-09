@@ -100,6 +100,23 @@ Share your achievements with others!
     </div>
 </div>
 
+<!-- LIKE BUTTON STUFF -->
+
+
+<div style="text-align: center;">
+  <button style="font-size: 40em; padding: 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    👍
+  </button>
+</div>
+
+
+<!-- END OF LIKE BUTTON STUFF -->
+
+
+
+
+
+
 <script type="module">
     // Import server URI and standard fetch options
     import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
@@ -605,3 +622,9 @@ Share your achievements with others!
     margin: 10px 0;
 }
 </style>
+
+
+
+
+
+
