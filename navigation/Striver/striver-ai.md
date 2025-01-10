@@ -13,6 +13,7 @@ author: Hithin
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
+    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
 </div>
 
 <style>
@@ -306,33 +307,44 @@ author: Hithin
 
     window.onload = displayTrickyMessage;
 
-    async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyARWxgkBaDvnw9dtWaHgQ8SCC1ar2sbdGM";
+async function sendToGeminiAPI(userMessage) {
+    const apiKey = "YOUR_SECURE_API_KEY"; // Replace with a securely stored API key
+    const modelVersion = 'gemini-1.5-flash-latest';
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelVersion}:generateContent?key=${apiKey}`;
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: `You are supposed to listen to the users challenges or achievementes, and interact with them, like a therapist or best friend. Your name is Striver. Remember - Your job is to hear people out on their struggles or goals, remember that, Your goal is to sound natural, and slightly imperfect. Keep responses conversational and informal, just like real people do in spontaneous conversation. Be friendly but not overly formal, and if you're unsure of something, just say so naturally. Use a few simple contractions, colloquial expressions, and everyday knowledge, but avoid giving overly detailed or precise information on technical topics. If asked something complex, admit you might not know the full answer, just like a regular person would. Use wrong spelling or punctuation. ${userMessage}` }]
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ 
+                        text: `You are Striver, an AI designed to listen to users' challenges, achievements, goals, and struggles, and respond like a supportive best friend or therapist. ${userMessage}` 
                     }]
-                })
-            });
+                }]
+            })
+        });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data.candidates[0].content.parts[0].text;
-        } catch (error) {
-            console.error('Error communicating with Gemini API:', error);
-            return "An error occurred while communicating with the AI.";
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
         }
+
+        const data = await response.json();
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!reply) {
+            throw new Error('Unexpected API response structure');
+        }
+
+        return reply;
+    } catch (error) {
+        console.error('Error communicating with Gemini API:', error);
+        return `An error occurred: ${error.message}. Please try again.`;
     }
+}
+
 
     let messageCount = 0;
     function incrementMessageCount() {
@@ -380,6 +392,20 @@ author: Hithin
         document.getElementById('outputDiv').appendChild(messageElement);
     }
 
+    const storedMessage = localStorage.getItem("storedMessage");
+    if(storedMessage) {
+        console.log("I tried", storedMessage);
+
+        const aiMessageElement = document.createElement('p');
+        aiMessageElement.classList.add('ai-bubble');
+        aiMessageElement.textContent = storedMessage;
+        document.getElementById('outputDiv').appendChild(aiMessageElement);
+        incrementMessageCount();
+        
+        const messagesDiv = document.getElementById('outputDiv');
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
     // Chat functionality
     document.getElementById('messageBox').addEventListener('keypress', async function(event) {
     if (event.key === 'Enter') {
@@ -398,6 +424,9 @@ author: Hithin
         // TODO: Add response delay.
         setTimeout(async () => {
             const aiResponse = await sendToGeminiAPI(userMessage);
+
+            localStorage.setItem("storedMessage", aiResponse);
+            console.log(aiResponse);
 
             const aiMessageElement = document.createElement('p');
             aiMessageElement.classList.add('ai-bubble');
