@@ -13,7 +13,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
-    <a href="/StriverrFrontend/Striver/striver-qotd" class="sidebar-btn bottom-btn">QOTD</a>
+    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
 </div>
 
 <h1 style="color:cyan;">Achievements</h1>
