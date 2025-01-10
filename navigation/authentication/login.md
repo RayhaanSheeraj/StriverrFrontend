@@ -49,7 +49,7 @@ show_reading_time: false
 <div class="login-container">
     <!-- Python Login Form -->
     <div class="login-card">
-        <h1 id="pythonTitle">User Login (Python/Flask)</h1>
+        <h1 id="pythonTitle">Striver Login</h1>
         <form id="pythonForm" onsubmit="pythonLogin(); return false;">
             <p>
                 <label>
@@ -70,7 +70,7 @@ show_reading_time: false
         </form>
     </div>
     <div class="signup-card">
-        <h1 id="signupTitle">Sign Up</h1>
+        <h1 id="signupTitle">Stiver Sign Up</h1>
         <form id="signupForm" onsubmit="signup(); return false;">
             <p>
                 <label>
