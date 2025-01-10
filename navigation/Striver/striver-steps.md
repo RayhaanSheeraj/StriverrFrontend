@@ -47,59 +47,100 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         margin-top: auto; 
     }
 </style>
-<div class="Steps-container">
+<div class="steps-container">
     <h2>Steps Tracker</h2>
-
-    <!-- Form to add steps -->
     <div class="step-form">
         <input type="number" id="steps-input" placeholder="Enter steps" />
         <button onclick="submitSteps()">Submit Steps</button>
     </div>
-
-    <!-- Display the last recorded steps -->
     <div id="last-recorded-steps" class="qotd-container">
-        <h2>Last Recorded Steps:</h2>
-        <p id="steps-display">Loading...</p>
+        <h3>Last Recorded Steps:</h3>
+        <p id="steps-display">Error fetching steps</p>
         <p id="motivation-message"></p>
     </div>
 </div>
 
 <style>
-    .qotd-container {
-        margin: 20px;
+    /* General Layout */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #1e1e2f;
+        color: #fff;
+    }
+
+    .steps-container {
+        max-width: 600px;
+        margin: 50px auto;
         padding: 20px;
-        background-color: #f9f9f9;
+        background-color: #2c2c3e;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         text-align: center;
     }
-    .qotd-container h2 {
-        margin-bottom: 10px;
-        color: #333;
-    }
-    .qotd-container p {
-        font-size: 18px;
-        color: #555;
-    }
-    .step-form {
+
+    h2 {
+        font-size: 24px;
         margin-bottom: 20px;
     }
+
+    h3 {
+        font-size: 20px;
+        margin-top: 30px;
+    }
+
+    /* Form Styling */
+    .step-form {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
     #steps-input {
         padding: 10px;
         font-size: 16px;
-        width: 150px;
+        width: 200px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background-color: #3b3b4f;
+        color: white;
     }
+
+    #steps-input::placeholder {
+        color: #aaa;
+    }
+
     button {
         padding: 10px 20px;
+        font-size: 16px;
         background-color: #4CAF50;
         color: white;
         border: none;
+        border-radius: 5px;
         cursor: pointer;
+        transition: background-color 0.3s ease;
     }
+
     button:hover {
         background-color: #45a049;
     }
+
+    /* Display Section */
+    #last-recorded-steps {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #353547;
+        border-radius: 5px;
+    }
+
+    p {
+        font-size: 16px;
+        margin: 5px 0;
+    }
 </style>
+
 
 <script>
     // Function to fetch the last recorded steps
@@ -130,7 +171,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         if (steps >= 6000) {
             messageElement.innerText = 'Great Job!';
         } else if (steps >= 4000) {
-            messageElement.innerText = 'Good job, chat!';
+            messageElement.innerText = 'Good job!';
         } else {
             messageElement.innerText = 'Lock in!';
         }
