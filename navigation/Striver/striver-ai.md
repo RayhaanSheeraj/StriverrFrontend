@@ -13,6 +13,7 @@ author: Hithin
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
+    <a href="/StriverrFrontend/Striver/striver-qotd" class="sidebar-btn bottom-btn">QOTD</a>
 </div>
 
 <style>
