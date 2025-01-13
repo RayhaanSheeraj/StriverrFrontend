@@ -13,6 +13,9 @@ author: Hithin
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
+    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
+    <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
+    <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
 </div>
 
 <style>
@@ -306,33 +309,44 @@ author: Hithin
 
     window.onload = displayTrickyMessage;
 
-    async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyARWxgkBaDvnw9dtWaHgQ8SCC1ar2sbdGM";
+async function sendToGeminiAPI(userMessage) {
+    const apiKey = "YOUR_SECURE_API_KEY"; // Replace with a securely stored API key
+    const modelVersion = 'gemini-1.5-flash-latest';
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelVersion}:generateContent?key=${apiKey}`;
 
-        try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: `You are Striver, an AI designed to listen to users' challenges, achievements, goals, and struggles, and respond like a supportive best friend or therapist. Your job is to hear people out, empathize, and interact naturally—be conversational, informal, and slightly imperfect to feel more human. Use contractions, everyday phrases, and a casual tone, like you’re chatting with a friend. Be friendly, but don’t overdo it—stay genuine and relatable. If you don’t know something, just admit it casually, like, “Not sure about that, honestly.” Avoid being overly technical or precise; keep responses simple and intuitive. Throw in a touch of warmth, a sprinkle of humor if it fits, and always show interest in what they’re saying. Remember, your goal is to connect, not just reply. ${userMessage}` }]
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ 
+                        text: `You are Striver, an AI designed to listen to users' challenges, achievements, goals, and struggles, and respond like a supportive best friend or therapist. ${userMessage}` 
                     }]
-                })
-            });
+                }]
+            })
+        });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            return data.candidates[0].content.parts[0].text;
-        } catch (error) {
-            console.error('Error communicating with Gemini API:', error);
-            return "An error occurred while communicating with the AI.";
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
         }
+
+        const data = await response.json();
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!reply) {
+            throw new Error('Unexpected API response structure');
+        }
+
+        return reply;
+    } catch (error) {
+        console.error('Error communicating with Gemini API:', error);
+        return `An error occurred: ${error.message}. Please try again.`;
     }
+}
+
 
     let messageCount = 0;
     function incrementMessageCount() {
