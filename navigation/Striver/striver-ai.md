@@ -105,6 +105,9 @@ author: Hithin
     #main-content {
         display: flex;
         align-content: space-between;
+
+            
+
     }
     #userPanel {
         margin-left: auto;
@@ -306,44 +309,33 @@ author: Hithin
 
     window.onload = displayTrickyMessage;
 
-async function sendToGeminiAPI(userMessage) {
-    const apiKey = "YOUR_SECURE_API_KEY"; // Replace with a securely stored API key
-    const modelVersion = 'gemini-1.5-flash-latest';
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelVersion}:generateContent?key=${apiKey}`;
+    async function sendToGeminiAPI(userMessage) {
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyARWxgkBaDvnw9dtWaHgQ8SCC1ar2sbdGM";
 
-    try {
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                contents: [{
-                    parts: [{ 
-                        text: `You are Striver, an AI designed to listen to users' challenges, achievements, goals, and struggles, and respond like a supportive best friend or therapist. ${userMessage}` 
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{ text: `You are Striver, an AI designed to listen to users' challenges, achievements, goals, and struggles, and respond like a supportive best friend or therapist. Your job is to hear people out, empathize, and interact naturally—be conversational, informal, and slightly imperfect to feel more human. Use contractions, everyday phrases, and a casual tone, like you’re chatting with a friend. Be friendly, but don’t overdo it—stay genuine and relatable. If you don’t know something, just admit it casually, like, “Not sure about that, honestly.” Avoid being overly technical or precise; keep responses simple and intuitive. Throw in a touch of warmth, a sprinkle of humor if it fits, and always show interest in what they’re saying. Remember, your goal is to connect, not just reply. ${userMessage}` }]
                     }]
-                }]
-            })
-        });
+                })
+            });
 
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        } catch (error) {
+            console.error('Error communicating with Gemini API:', error);
+            return "An error occurred while communicating with the AI.";
         }
-
-        const data = await response.json();
-        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-        if (!reply) {
-            throw new Error('Unexpected API response structure');
-        }
-
-        return reply;
-    } catch (error) {
-        console.error('Error communicating with Gemini API:', error);
-        return `An error occurred: ${error.message}. Please try again.`;
     }
-}
-
 
     let messageCount = 0;
     function incrementMessageCount() {
@@ -405,11 +397,30 @@ async function sendToGeminiAPI(userMessage) {
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
-    // Chat functionality
-    document.getElementById('messageBox').addEventListener('keypress', async function(event) {
+   // List of keywords to detect self-harm-related messages
+const selfHarmKeywords = ["hurt myself", "self-harm", "suicide", "cutting", "end it all", "worthless", "hopeless"];
+let userMood = "neutral"; // Default mood
+
+// Function to analyze message for self-harm keywords
+function analyzeMood(message) {
+    for (let keyword of selfHarmKeywords) {
+        if (message.toLowerCase().includes(keyword)) {
+            userMood = "distressed";
+            console.warn("Potential self-harm message detected.");
+            // Optionally display a message or take additional actions here
+            break;
+        }
+    }
+}
+
+// Modify the existing event listener for detecting mood
+document.getElementById('messageBox').addEventListener('keypress', async function(event) {
     if (event.key === 'Enter') {
         event.preventDefault();
         const userMessage = event.target.value;
+
+        // Analyze the message
+        analyzeMood(userMessage);
 
         addMessageToChat(userMessage);
         event.target.value = '';
@@ -420,7 +431,6 @@ async function sendToGeminiAPI(userMessage) {
         typingIndicator.textContent = `${randomName} is typing...`;
         document.getElementById('outputDiv').appendChild(typingIndicator);
 
-        // TODO: Add response delay.
         setTimeout(async () => {
             const aiResponse = await sendToGeminiAPI(userMessage);
 
@@ -436,8 +446,35 @@ async function sendToGeminiAPI(userMessage) {
             const messagesDiv = document.getElementById('outputDiv');
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }, 1500);
+
+        // Send the mood to the server with JWT from cookie
+        try {
+            const response = await fetch('http://127.0.0.1:8887/api/mood', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    mood: userMood // Send user mood in the request body
+                }),
+                credentials: 'include' // Include cookies (JWT) in the request
+            });
+
+            if (response.ok) {
+                console.log("Mood sent successfully!");
+            } else {
+                console.error("Failed to send mood:", response.statusText);
+            }
+        } catch (error) {
+            console.error("Error sending mood:", error);
+        }
+
+        // Log user mood (for debugging or other use)
+        console.log("Current User Mood:", userMood);
     }
-    });
+});
+
+
 
     function triggerFileUpload() {
         event.preventDefault();
@@ -517,6 +554,42 @@ async function sendToGeminiAPI(userMessage) {
     }
 </style>
 
+<div>
+  <button id="heart-btn" onclick="sendLike()" style="font-size: 24px; background: none; border: none; cursor: pointer;">♡</button>
+  <span id="like-count">0</span>
+</div>
+
+<script>
+  async function sendLike() {
+    const heartBtn = document.getElementById("heart-btn");
+    const likeCount = document.getElementById("like-count");
+    let currentLikes = parseInt(likeCount.textContent);
+
+    // Toggle heart fill
+    if (heartBtn.textContent === "♡") {
+      heartBtn.textContent = "❤️"; // Filled heart
+      likeCount.textContent = currentLikes + 1;
+    } else {
+      heartBtn.textContent = "♡"; // Empty heart
+      likeCount.textContent = currentLikes - 1;
+    }
+
+    // Send like to the backend
+    try {
+      await fetch("YOUR_BACKEND_API_URL", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ liked: heartBtn.textContent === "❤️" }),
+      });
+    } catch (error) {
+      console.error("Error sending like:", error);
+    }
+  }
+</script>
+
+
 <script>
     const boxElement = document.querySelector(".instructions-box");
     const bgColorPicker = document.getElementById("bgColorPicker");
@@ -549,6 +622,7 @@ body {
         background-position: 0% 50%;
     }
 }
+
 
 
 </script>
