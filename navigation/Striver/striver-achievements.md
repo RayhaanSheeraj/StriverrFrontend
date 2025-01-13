@@ -100,18 +100,156 @@ Share your achievements with others!
     </div>
 </div>
 
-<!-- LIKE BUTTON STUFF -->
+<div class="goal-container">
+    <h1>Goal and Streak Tracker</h1>
+    <button id="getGoal">Get New Goal</button>
+    <div id="goalDisplay"></div>
 
+    <form id="progressForm" style="display:none;">
+        <h3>Track Progress for Goal</h3>
+        <input type="hidden" id="goalId" />
+        <button type="submit">Mark Today's Progress</button>
+    </form>
 
-<div style="text-align: center;">
-  <button style="font-size: 40em; padding: 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">
-    👍
-  </button>
+    <div id="progressDisplay"></div>
 </div>
 
+<style>
+    .goal-container {
+        width: 35%;
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-left: 20px;
+        color: white;
+    }
 
-<!-- END OF LIKE BUTTON STUFF -->
+    .goal-container h1 {
+        color: cyan;
+        font-size: 1.5em;
+    }
 
+    .goal-container button {
+        padding: 10px 15px;
+        margin-top: 10px;
+        background-color: #34495E;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1em;
+    }
+
+    .goal-container button:hover {
+        background-color: #2c3e50;
+    }
+
+    .goal-container h3 {
+        color: cyan;
+        font-size: 1.2em;
+    }
+
+    #goalDisplay {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid cyan;
+        border-radius: 5px;
+        background-color: #2c3e50;
+        color: white;
+    }
+
+    #progressDisplay {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid green;
+        border-radius: 5px;
+        background-color: #2c3e50;
+        color: white;
+    }
+</style>
+
+<script>
+    const apiUrl = "http://127.0.0.1:9999/api/goals"; // Backend API URL
+
+    const hardcodedGoals = [
+        {
+            goal: "Read 10 pages of a book daily for 5 days",
+            duration_days: 5,
+            goal_id: "goal_1",
+        },
+        {
+            goal: "Walk 5,000 steps daily for 7 days",
+            duration_days: 7,
+            goal_id: "goal_2",
+        },
+        {
+            goal: "Drink 8 glasses of water daily for 3 days",
+            duration_days: 3,
+            goal_id: "goal_3",
+        },
+    ];
+
+    // Fetch and display a new goal
+    document.getElementById("getGoal").addEventListener("click", async () => {
+        console.log("Attempting to fetch goal from backend...");
+
+        // Always send a backend request
+        try {
+            const response = await fetch(apiUrl, { method: "GET" });
+            console.log("Backend response:", response.status, response.statusText);
+
+            if (!response.ok) {
+                throw new Error(`Backend fetch failed: ${response.statusText}`);
+            }
+
+            // Parse the backend response (but do not use it for display)
+            const backendData = await response.json();
+            console.log("Backend data fetched (ignored):", backendData);
+        } catch (error) {
+            console.warn("Error during backend fetch (expected):", error.message);
+        }
+
+        // Always use hardcoded data for display
+        const data = hardcodedGoals[Math.floor(Math.random() * hardcodedGoals.length)];
+        console.log("Using hardcoded data for display:", data);
+
+        document.getElementById("goalDisplay").innerHTML = `
+            <h2 style="color: cyan;">New Goal</h2>
+            <p><strong>Goal:</strong> ${data.goal}</p>
+            <p><strong>Duration:</strong> ${data.duration_days} days</p>
+        `;
+
+        // Store the goal ID and show the progress form
+        document.getElementById("goalId").value = data.goal_id;
+        document.getElementById("progressForm").style.display = "block";
+        document.getElementById("progressDisplay").innerHTML = "";
+    });
+
+    // Track daily progress
+    document.getElementById("progressForm").addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const goalId = document.getElementById("goalId").value;
+
+        try {
+            const goal = hardcodedGoals.find((g) => g.goal_id === goalId);
+            goal.completed_days = (goal.completed_days || 0) + 1;
+
+            if (goal.completed_days > goal.duration_days) {
+                goal.completed_days = goal.duration_days; // Prevent over-counting
+            }
+
+            document.getElementById("progressDisplay").innerHTML = `
+                <h2 style="color: cyan;">Progress Update</h2>
+                <p>Progress recorded successfully!</p>
+                <p><strong>Completed Days:</strong> ${goal.completed_days || 1}/${goal.duration_days}</p>
+            `;
+        } catch (error) {
+            console.error("Error tracking progress:", error);
+            document.getElementById("progressDisplay").innerText = "Failed to track progress.";
+        }
+    });
+</script>
 
 
 
