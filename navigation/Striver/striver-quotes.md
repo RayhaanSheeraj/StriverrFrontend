@@ -29,7 +29,7 @@ Explore quotes!
             <label for="category">Category:</label>
             <select id="category">
                 <option value="">All</option>
-                <option value="general">General</option>
+                <option value="common">Common</option>
                 <option value="sports">Sports</option>
                 <option value="motivational">Motivation</option>
             </select>
@@ -92,9 +92,13 @@ Explore quotes!
         { text: "The only way to do great work is to love what you do.", category: "motivational" },
         { text: "Don't watch the clock; do what it does. Keep going.", category: "motivational" },
         { text: "Winning isn’t everything, but wanting to win is.", category: "sports" },
+        { text: "Champions keep playing until they get it right.", category: "sports" },
         { text: "Hard work beats talent when talent doesn’t work hard.", category: "sports" },
-        { text: "Success is not the key to happiness. Happiness is the key to success.", category: "general" },
-        { text: "In the middle of every difficulty lies opportunity.", category: "general" },
+        { text: "Success is not the key to happiness. Happiness is the key to success.", category: "common" },
+        { text: "Happiness is not by chance, but by choice.", category: "common" },
+        { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "common" },
+        { text: "Believe you can, and you're halfway there.", category: "common" },
+        { text: "In the middle of every difficulty lies opportunity.", category: "common" },
         { text: "Never give up on something you can’t go a day without thinking about.", category: "motivational" },
         { text: "It’s not the will to win that matters—everyone has that. It’s the will to prepare to win that matters.", category: "sports" }
     ];
