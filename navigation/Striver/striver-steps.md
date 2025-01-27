@@ -54,6 +54,8 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <div class="step-form">
         <input type="number" id="steps-input" placeholder="Enter steps" />
         <button onclick="submitSteps()">Submit Steps</button>
+        <button onclick="updateSteps()">Update</button>
+        <button onclick="deleteSteps()">Delete</button>
     </div>
     <div id="last-recorded-steps" class="qotd-container">
         <h3>Last Recorded Steps:</h3>
@@ -146,18 +148,19 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
 
 <script>
     // Function to fetch the last recorded steps
+    // Function to fetch the last recorded steps
     async function fetchLastSteps() {
         try {
             const response = await fetch('http://127.0.0.1:8887/api/steps', {
                 method: 'GET',
-                credentials: 'include',  // Ensure JWT cookie is sent with the request
+                credentials: 'include', // Ensure JWT cookie is sent with the request
             });
 
             if (response.ok) {
                 const data = await response.json();
-                const steps = data.steps;
-                document.getElementById('steps-display').innerText = steps;
-                displayMotivationMessage(steps);
+                const stepCount = data.steps.steps; // Accessing the steps property in the nested object
+                document.getElementById('steps-display').innerText = stepCount;
+                displayMotivationMessage(stepCount);
             } else {
                 document.getElementById('steps-display').innerText = 'Error fetching steps';
             }
@@ -165,7 +168,6 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
             document.getElementById('steps-display').innerText = 'Error fetching steps';
         }
     }
-
     // Function to display motivational message
     // Function to display motivational message
     function displayMotivationMessage(steps) {
@@ -209,6 +211,56 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
             alert('Error submitting steps');
         }
     }
+    async function updateSteps() {
+        const stepsInput = document.getElementById('steps-input');
+        const steps = parseInt(stepsInput.value, 10);
+
+    if (isNaN(steps) || steps <= 0) {
+        alert('Please enter a valid number of steps');
+        return;
+    }
+
+    try {
+        const response = await fetch('http://127.0.0.1:8887/api/steps', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ steps }),
+            credentials: 'include', // Ensure JWT cookie is sent with the request
+        });
+
+        if (response.ok) {
+            await fetchLastSteps(); // Refresh steps display
+        } else {
+            alert('Error updating steps');
+        }
+    } catch (error) {
+        alert('Error updating steps');
+    }
+}
+async function deleteSteps() {
+    try {
+        const response = await fetch('http://127.0.0.1:8887/api/steps', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Ensure JWT cookie is sent with the request
+        });
+
+        if (response.ok) {
+            document.getElementById('steps-display').innerText = 'No steps recorded';
+        } else {
+            const errorData = await response.json();
+            alert('Error deleting steps: ' + errorData.message);
+        }
+    } catch (error) {
+        console.error('Error deleting steps:', error);
+        alert('Error deleting steps: ' + error.message);
+    }
+}
+
 
     // Fetch the last recorded steps on page load
     window.onload = fetchLastSteps;
