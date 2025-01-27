@@ -3,20 +3,8 @@ layout: base
 title: Striver Hobbies
 search_exclude: true
 permalink: /Striver/striver-hobbies
-author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
+author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
 ---
-
-<div class="sidebar">
-    <a href="/StriverrFrontend/Striver/striver-achievements" class="sidebar-btn">⭐️ Achievements</a>
-    <a href="/StriverrFrontend/Striver/striver-challenges" class="sidebar-btn">📉 Challenges</a>
-    <a href="/StriverrFrontend/Striver/striver-ai" class="sidebar-btn">🤖 AI</a>
-    <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
-    <a href="/StriverrFrontend/Striver/striver-terms" class="sidebar-btn">📄 Terms</a>
-    <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
-    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
-    <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
-    <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
-</div>
 
 <div class="sidebar">
     <a href="/StriverrFrontend/Striver/striver-achievements" class="sidebar-btn">⭐️ Achievements</a>
@@ -43,7 +31,6 @@ Explore and manage your hobbies!
                 <option value="sports">Sports</option>
                 <option value="arts">Arts</option>
             </select>
-            <button onclick="fetchHobbies()">Get Hobbies</button>
         </div>
     </div>
 </div>
@@ -58,86 +45,159 @@ Explore and manage your hobbies!
 <div class="container">
     <div class="form-container">
         <h2>Add Hobby</h2>
+        <label for="new-hobby-name">Hobby Name:</label>
         <input type="text" id="new-hobby-name" placeholder="Enter hobby name" />
-        <button onclick="addHobby()">Add Hobby</button>
+        <label for="new-hobby-category">Category:</label>
+        <select id="new-hobby-category">
+            <option value="general">General</option>
+            <option value="sports">Sports</option>
+            <option value="arts">Arts</option>
+        </select>
+        <button id="add-hobby-btn">Add Hobby</button>
     </div>
 </div>
 
 <div class="container">
     <div class="form-container">
         <h2>Update Hobby</h2>
+        <label for="old-hobby-name">Old Hobby Name:</label>
         <input type="text" id="old-hobby-name" placeholder="Old hobby name" />
+        <label for="updated-hobby-name">New Hobby Name:</label>
         <input type="text" id="updated-hobby-name" placeholder="New hobby name" />
-        <button onclick="updateHobby()">Update Hobby</button>
+        <label for="update-hobby-category">Category:</label>
+        <select id="update-hobby-category">
+            <option value="general">General</option>
+            <option value="sports">Sports</option>
+            <option value="arts">Arts</option>
+        </select>
+        <button id="update-hobby-btn">Update Hobby</button>
     </div>
 </div>
 
 <div class="container">
     <div class="form-container">
         <h2>Delete Hobby</h2>
+        <label for="delete-hobby-name">Hobby Name:</label>
         <input type="text" id="delete-hobby-name" placeholder="Hobby name to delete" />
-        <button onclick="deleteHobby()">Delete Hobby</button>
+        <label for="delete-hobby-category">Category:</label>
+        <select id="delete-hobby-category">
+            <option value="general">General</option>
+            <option value="sports">Sports</option>
+            <option value="arts">Arts</option>
+        </select>
+        <button id="delete-hobby-btn">Delete Hobby</button>
     </div>
 </div>
 
-<div class="members-section">
-    <h3 style="color:cyan;">Members</h3>
-    <ul>
-        <li>⚪ John</li>
-        <li>⚪ Mary</li>
-        <li>⚪ Jack</li>
-        <li>⚪ Bob</li>
-        <li>⚪ Matt</li>
-        <li>⚪ Mark</li>
-        <li>⚪ Juan</li>
-        <li>⚪ Travis</li>
-    </ul>
-</div>
+<script type="module">
+    const pythonURI = 'http://127.0.0.1:8887';
+    const fetchOptions = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
 
-<script>
-    const apiUrl = 'http://127.0.0.1:8887/api/hobby';
-function fetchHobbies() {
-    // Fetch hobbies based on the selected category
-    const category = document.getElementById('category').value;
-    // Example: Fetch hobbies from a server or local storage
-    console.log(`Fetching hobbies for category: ${category}`);
-}
+    async function fetchHobbies() {
+        try {
+            const category = document.getElementById('category').value;
+            const response = await fetch(`${pythonURI}/api/hobby?category=${category}`, {
+                ...fetchOptions,
+                method: 'GET'
+            });
 
-function addHobby() {
-    const hobbyName = document.getElementById('new-hobby-name').value;
-    if (hobbyName) {
-        const hobbiesList = document.getElementById('hobbies-list');
-        const listItem = document.createElement('li');
-        listItem.textContent = hobbyName;
-        hobbiesList.appendChild(listItem);
-        console.log(`Added hobby: ${hobbyName}`);
-    }
-}
+            if (!response.ok) {
+                throw new Error('Failed to fetch hobbies: ' + response.statusText);
+            }
+            const data = await response.json();
+            const hobbiesList = document.getElementById('hobbies-list');
+            hobbiesList.innerHTML = "";
 
-function updateHobby() {
-    const oldHobbyName = document.getElementById('old-hobby-name').value;
-    const updatedHobbyName = document.getElementById('updated-hobby-name').value;
-    const hobbiesList = document.getElementById('hobbies-list').children;
-    for (let i = 0; i < hobbiesList.length; i++) {
-        if (hobbiesList[i].textContent === oldHobbyName) {
-            hobbiesList[i].textContent = updatedHobbyName;
-            console.log(`Updated hobby: ${oldHobbyName} to ${updatedHobbyName}`);
-            break;
+            data.hobbies.forEach(hobby => {
+                const listItem = document.createElement('li');
+                listItem.textContent = hobby;
+                hobbiesList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Error fetching hobbies:', error);
         }
     }
-}
 
-function deleteHobby() {
-    const hobbyName = document.getElementById('delete-hobby-name').value;
-    const hobbiesList = document.getElementById('hobbies-list').children;
-    for (let i = 0; i < hobbiesList.length; i++) {
-        if (hobbiesList[i].textContent === hobbyName) {
-            hobbiesList[i].remove();
-            console.log(`Deleted hobby: ${hobbyName}`);
-            break;
+    async function addHobby() {
+        const hobbyName = document.getElementById('new-hobby-name').value;
+        const category = document.getElementById('new-hobby-category').value;
+        try {
+            const response = await fetch(`${pythonURI}/api/hobby`, {
+                ...fetchOptions,
+                method: 'POST',
+                body: JSON.stringify({ name: hobbyName, category: category })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to add hobby: ' + response.statusText);
+            }
+
+            alert('Hobby added successfully!');
+            document.getElementById('new-hobby-name').value = ''; // Clear input
+            fetchHobbies(); // Refresh hobbies list
+        } catch (error) {
+            console.error('Error adding hobby:', error);
+            alert('Error adding hobby: ' + error.message);
         }
     }
-}
+
+    async function updateHobby() {
+        const oldHobbyName = document.getElementById('old-hobby-name').value;
+        const updatedHobbyName = document.getElementById('updated-hobby-name').value;
+        const category = document.getElementById('update-hobby-category').value;
+        try {
+            const response = await fetch(`${pythonURI}/api/hobby`, {
+                ...fetchOptions,
+                method: 'PUT',
+                body: JSON.stringify({ old_name: oldHobbyName, name: updatedHobbyName, category: category })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update hobby: ' + response.statusText);
+            }
+
+            alert('Hobby updated successfully!');
+            document.getElementById('old-hobby-name').value = ''; // Clear input
+            document.getElementById('updated-hobby-name').value = ''; // Clear input
+            fetchHobbies(); // Refresh hobbies list
+        } catch (error) {
+            console.error('Error updating hobby:', error);
+            alert('Error updating hobby: ' + error.message);
+        }
+    }
+
+    async function deleteHobby() {
+        const hobbyName = document.getElementById('delete-hobby-name').value;
+        const category = document.getElementById('delete-hobby-category').value;
+        try {
+            const response = await fetch(`${pythonURI}/api/hobby`, {
+                ...fetchOptions,
+                method: 'DELETE',
+                body: JSON.stringify({ name: hobbyName, category: category })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete hobby: ' + response.statusText);
+            }
+
+            alert('Hobby deleted successfully!');
+            document.getElementById('delete-hobby-name').value = ''; // Clear input
+            fetchHobbies(); // Refresh hobbies list
+        } catch (error) {
+            console.error('Error deleting hobby:', error);
+            alert('Error deleting hobby: ' + error.message);
+        }
+    }
+
+    document.getElementById('category').addEventListener('change', fetchHobbies);
+    document.getElementById('add-hobby-btn').addEventListener('click', addHobby);
+    document.getElementById('update-hobby-btn').addEventListener('click', updateHobby);
+    document.getElementById('delete-hobby-btn').addEventListener('click', deleteHobby);
+    fetchHobbies();
 </script>
 
 <style>
@@ -192,35 +252,6 @@ h1, h2 {
 .form-container button:hover {
   background-color: #1A252F;
 }
-
-/* Members Section */
-.members-section {
-  background-color: #111;
-  color: white;
-  width: 200px; /* Set width for the sidebar */
-  position: fixed; /* Fix it to the side */
-  right: 0;
-  top: 0;
-  bottom: 0; /* Stretch it vertically */
-  padding-top: 20px; /* Add padding from top */
-  text-align: left; /* Align text to the left */
-  z-index: 10; /* Ensure it stays above other elements */
-}
-
-.members-section h3 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.members-section ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.members-section li {
-  margin: 10px 0;
-}
-
 /* Sidebar */
 .sidebar {
   position: fixed;
