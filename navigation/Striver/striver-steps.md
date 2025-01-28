@@ -16,6 +16,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
+    <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
 </div>
 <style>
     .sidebar {
@@ -212,33 +213,33 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         }
     }
     async function updateSteps() {
-        const stepsInput = document.getElementById('steps-input');
-        const steps = parseInt(stepsInput.value, 10);
+        const steps = parseInt(prompt('Please enter the new number of steps:'), 10);
 
-    if (isNaN(steps) || steps <= 0) {
-        alert('Please enter a valid number of steps');
-        return;
-    }
-
-    try {
-        const response = await fetch('http://127.0.0.1:8887/api/steps', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ steps }),
-            credentials: 'include', // Ensure JWT cookie is sent with the request
-        });
-
-        if (response.ok) {
-            await fetchLastSteps(); // Refresh steps display
-        } else {
-            alert('Error updating steps');
+        if (isNaN(steps) || steps <= 0) {
+            alert('Please enter a valid number of steps');
+            return;
         }
-    } catch (error) {
-        alert('Error updating steps');
-    }
+
+        try {
+            const response = await fetch('http://127.0.0.1:8887/api/steps', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ steps }),
+                credentials: 'include',  // Ensure JWT cookie is sent with the request
+            });
+
+            if (response.ok) {
+                await fetchLastSteps();  // Fetch and display the updated steps after submission
+            } else {
+                alert('Error submitting steps');
+            }
+        } catch (error) {
+            alert('Error submitting steps');
+        }
 }
+
 async function deleteSteps() {
     try {
         const response = await fetch('http://127.0.0.1:8887/api/steps', {
