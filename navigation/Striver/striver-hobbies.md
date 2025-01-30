@@ -58,38 +58,6 @@ Explore and manage your hobbies!
     </div>
 </div>
 
-<div class="container">
-    <div class="form-container">
-        <h2>Update Hobby</h2>
-        <label for="old-hobby-name">Old Hobby Name:</label>
-        <input type="text" id="old-hobby-name" placeholder="Old hobby name" />
-        <label for="updated-hobby-name">New Hobby Name:</label>
-        <input type="text" id="updated-hobby-name" placeholder="New hobby name" />
-        <label for="update-hobby-category">Category:</label>
-        <select id="update-hobby-category">
-            <option value="general">General</option>
-            <option value="sports">Sports</option>
-            <option value="arts">Arts</option>
-        </select>
-        <button id="update-hobby-btn">Update Hobby</button>
-    </div>
-</div>
-
-<div class="container">
-    <div class="form-container">
-        <h2>Delete Hobby</h2>
-        <label for="delete-hobby-name">Hobby Name:</label>
-        <input type="text" id="delete-hobby-name" placeholder="Hobby name to delete" />
-        <label for="delete-hobby-category">Category:</label>
-        <select id="delete-hobby-category">
-            <option value="general">General</option>
-            <option value="sports">Sports</option>
-            <option value="arts">Arts</option>
-        </select>
-        <button id="delete-hobby-btn">Delete Hobby</button>
-    </div>
-</div>
-
 <script type="module">
     const pythonURI = 'http://127.0.0.1:8887';
     const fetchOptions = {
@@ -115,7 +83,33 @@ Explore and manage your hobbies!
 
             data.hobbies.forEach(hobby => {
                 const listItem = document.createElement('li');
-                listItem.textContent = hobby;
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.justifyContent = 'space-between';
+
+                const hobbyText = document.createElement('span');
+                hobbyText.textContent = hobby;
+
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.style.marginLeft = '10px'; // Add some space between buttons
+                updateButton.style.padding = '2px 5px';
+                updateButton.style.fontSize = '12px'; // Make the button smaller
+                updateButton.style.width = '60px'; // Make the button smaller horizontally
+                updateButton.classList.add('update-btn');
+                updateButton.onclick = () => promptUpdateHobby(hobby, category);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = '10px'; // Add some space between buttons
+                deleteButton.style.padding = '2px 5px';
+                deleteButton.style.fontSize = '12px'; // Make the button smaller
+                deleteButton.style.width = '60px'; // Make the button smaller horizontally
+                deleteButton.onclick = () => deleteHobby(hobby, category);
+
+                listItem.appendChild(hobbyText);
+                listItem.appendChild(updateButton);
+                listItem.appendChild(deleteButton);
                 hobbiesList.appendChild(listItem);
             });
         } catch (error) {
@@ -126,10 +120,31 @@ Explore and manage your hobbies!
     async function addHobby() {
         const hobbyName = document.getElementById('new-hobby-name').value;
         const category = document.getElementById('new-hobby-category').value;
+        const allHobbiesResponse = await fetch(`${pythonURI}/api/hobby`, {
+            ...fetchOptions,
+            method: 'GET'
+        });
+
+        if (!allHobbiesResponse.ok) {
+            alert('Failed to fetch all hobbies');
+            return;
+        }
+
+        const allHobbiesData = await allHobbiesResponse.json();
+        const allHobbiesList = allHobbiesData.hobbies.flatMap(hobby => hobby);
+
+        if (allHobbiesList.includes(hobbyName)) {
+            alert('Hobby already exists!');
+            return;
+        }
+
         try {
             const response = await fetch(`${pythonURI}/api/hobby`, {
                 ...fetchOptions,
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ name: hobbyName, category: category })
             });
 
@@ -146,38 +161,58 @@ Explore and manage your hobbies!
         }
     }
 
-    async function updateHobby() {
-        const oldHobbyName = document.getElementById('old-hobby-name').value;
-        const updatedHobbyName = document.getElementById('updated-hobby-name').value;
-        const category = document.getElementById('update-hobby-category').value;
-        try {
-            const response = await fetch(`${pythonURI}/api/hobby`, {
-                ...fetchOptions,
-                method: 'PUT',
-                body: JSON.stringify({ old_name: oldHobbyName, name: updatedHobbyName, category: category })
-            });
+    async function promptUpdateHobby(hobbyName, category) {
+        const updatedHobbyName = prompt('Enter new hobby name:', hobbyName);
+        const allHobbiesResponse = await fetch(`${pythonURI}/api/hobby`, {
+            ...fetchOptions,
+            method: 'GET'
+        });
 
-            if (!response.ok) {
-                throw new Error('Failed to update hobby: ' + response.statusText);
+        if (!allHobbiesResponse.ok) {
+            alert('Failed to fetch all hobbies');
+            return;
+        }
+
+        const allHobbiesData = await allHobbiesResponse.json();
+        const allHobbiesList = allHobbiesData.hobbies.flatMap(hobby => hobby);
+
+        if (allHobbiesList.includes(updatedHobbyName)) {
+            alert('Hobby already exists!');
+            return;
+        }
+
+        if (updatedHobbyName) {
+            try {
+                const response = await fetch(`${pythonURI}/api/hobby`, {
+                    ...fetchOptions,
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ old_name: hobbyName, name: updatedHobbyName, category: category })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update hobby: ' + response.statusText);
+                }
+
+                alert('Hobby updated successfully!');
+                fetchHobbies(); // Refresh hobbies list
+            } catch (error) {
+                console.error('Error updating hobby:', error);
+                alert('Error updating hobby: ' + error.message);
             }
-
-            alert('Hobby updated successfully!');
-            document.getElementById('old-hobby-name').value = ''; // Clear input
-            document.getElementById('updated-hobby-name').value = ''; // Clear input
-            fetchHobbies(); // Refresh hobbies list
-        } catch (error) {
-            console.error('Error updating hobby:', error);
-            alert('Error updating hobby: ' + error.message);
         }
     }
 
-    async function deleteHobby() {
-        const hobbyName = document.getElementById('delete-hobby-name').value;
-        const category = document.getElementById('delete-hobby-category').value;
+    async function deleteHobby(hobbyName, category) {
         try {
             const response = await fetch(`${pythonURI}/api/hobby`, {
                 ...fetchOptions,
                 method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({ name: hobbyName, category: category })
             });
 
@@ -186,7 +221,6 @@ Explore and manage your hobbies!
             }
 
             alert('Hobby deleted successfully!');
-            document.getElementById('delete-hobby-name').value = ''; // Clear input
             fetchHobbies(); // Refresh hobbies list
         } catch (error) {
             console.error('Error deleting hobby:', error);
@@ -196,8 +230,6 @@ Explore and manage your hobbies!
 
     document.getElementById('category').addEventListener('change', fetchHobbies);
     document.getElementById('add-hobby-btn').addEventListener('click', addHobby);
-    document.getElementById('update-hobby-btn').addEventListener('click', updateHobby);
-    document.getElementById('delete-hobby-btn').addEventListener('click', deleteHobby);
     fetchHobbies();
 </script>
 
@@ -253,6 +285,46 @@ h1, h2 {
 .form-container button:hover {
   background-color: #1A252F;
 }
+
+#hobbies-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #34495E;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+#hobbies-list button {
+  background-color: #E74C3C;
+  color: #ECF0F1;
+  border: none;
+  padding: 2px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px; /* Make the button smaller */
+  width: 60px; /* Make the button smaller horizontally */
+  margin-left: 0; /* Move the button closer */
+}
+
+#hobbies-list button.update-btn {
+  background-color: #3498DB;
+  margin-left: 10px; /* Add some space between buttons */
+}
+
+#hobbies-list button.update-btn:hover {
+  background-color: #2980B9;
+}
+
+#hobbies-list span {
+  flex-grow: 1; /* Ensure the text takes up available space */
+}
+
+#hobbies-list button:hover {
+  background-color: #C0392B;
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
