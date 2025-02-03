@@ -59,12 +59,8 @@ Explore and manage your hobbies!
 </div>
 
 <script type="module">
-    const pythonURI = 'http://127.0.0.1:8887';
-    const fetchOptions = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
+
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
     async function fetchHobbies() {
         try {
