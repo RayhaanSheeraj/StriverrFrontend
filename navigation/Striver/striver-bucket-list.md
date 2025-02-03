@@ -48,6 +48,8 @@ Explore and manage your bucket list!
         <h2>Add Bucket List Item</h2>
         <label for="new-bucket-item">Item:</label>
         <input type="text" id="new-bucket-item" placeholder="Enter bucket list item" />
+        <label for="new-bucket-desc">Description:</label>
+        <input type="text" id="new-bucket-desc" placeholder="Enter description" />
         <label for="new-bucket-category">Category:</label>
         <select id="new-bucket-category">
             <option value="travel">Travel</option>
@@ -91,32 +93,33 @@ Explore and manage your bucket list!
 </div>
 
 <script type="module">
-    const pythonURI = 'http://127.0.0.1:8887';
-    const fetchOptions = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
 
     async function fetchBucketList() {
         try {
             const category = document.getElementById('category').value;
-            const response = await fetch(`${pythonURI}/api/bucketlist?category`, {
-                ...fetchOptions,
-                method: 'GET'
-            });
+            const response = await fetch('http://127.0.0.1:8887/api/bucketlist', {});
 
             if (!response.ok) {
                 throw new Error('Failed to fetch bucket list: ' + response.statusText);
             }
+
             const data = await response.json();
+            console.log(data)
             const bucketList = document.getElementById('bucket-list');
             bucketList.innerHTML = "";
 
             data.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.textContent = item;
-                bucketList.appendChild(listItem);
+
+                const titleItem = document.createElement('h3');
+                titleItem.textContent = `${item['title']} (${item['category']})`;
+                bucketList.appendChild(titleItem);
+
+                const descItem = document.createElement('p');
+                descItem.textContent = `${item['description']}`;
+                bucketList.appendChild(descItem);
+
+                const breakItem = document.createElement('br');
+                bucketList.appendChild(breakItem);
             });
         } catch (error) {
             console.error('Error fetching bucket list:', error);
@@ -125,12 +128,21 @@ Explore and manage your bucket list!
 
     async function addBucketListItem() {
         const item = document.getElementById('new-bucket-item').value;
+        const desc = document.getElementById('new-bucket-desc').value;
         const category = document.getElementById('new-bucket-category').value;
+
+        const postData = {
+            title: JSON.stringify(item),
+            description: JSON.stringify(desc),
+            category: JSON.stringify(category),
+        };
         try {
-            const response = await fetch(`${pythonURI}/api/bucketlist`, {
-                ...fetchOptions,
+            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
                 method: 'POST',
-                body: JSON.stringify({ item: item, category: category })
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
             });
 
             if (!response.ok) {
@@ -151,7 +163,7 @@ Explore and manage your bucket list!
         const newItem = document.getElementById('updated-bucket-item').value;
         const category = document.getElementById('update-bucket-category').value;
         try {
-            const response = await fetch(`${pythonURI}/api/bucketlist`, {
+            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
                 ...fetchOptions,
                 method: 'PUT',
                 body: JSON.stringify({ old_item: oldItem, new_item: newItem, category: category })
@@ -175,7 +187,7 @@ Explore and manage your bucket list!
         const item = document.getElementById('delete-bucket-item').value;
         const category = document.getElementById('delete-bucket-category').value;
         try {
-            const response = await fetch(`${pythonURI}/api/bucketlist`, {
+            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
                 ...fetchOptions,
                 method: 'DELETE',
                 body: JSON.stringify({ item: item, category: category })
