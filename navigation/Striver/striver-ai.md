@@ -314,7 +314,7 @@ author: Hithin
     window.onload = displayTrickyMessage;
 
     async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyARWxgkBaDvnw9dtWaHgQ8SCC1ar2sbdGM";
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBypRsU2zOQJRHJK4KgJm4GJJc1TGHnELI";
 
         try {
             const response = await fetch(apiUrl, {
@@ -538,6 +538,8 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
 
 </script>
 
+
+
 <div class="customization-panel">
     <h4>Customize Appearance</h4>
     <label for="bgColorSlider">Box Background Color:</label>
@@ -558,40 +560,31 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
     }
 </style>
 
-<div>
-  <button id="heart-btn" onclick="sendLike()" style="font-size: 24px; background: none; border: none; cursor: pointer;">♡</button>
-  <span id="like-count">0</span>
-</div>
-
 <script>
-  async function sendLike() {
-    const heartBtn = document.getElementById("heart-btn");
-    const likeCount = document.getElementById("like-count");
-    let currentLikes = parseInt(likeCount.textContent);
-
-    // Toggle heart fill
-    if (heartBtn.textContent === "♡") {
-      heartBtn.textContent = "❤️"; // Filled heart
-      likeCount.textContent = currentLikes + 1;
-    } else {
-      heartBtn.textContent = "♡"; // Empty heart
-      likeCount.textContent = currentLikes - 1;
-    }
-
-    // Send like to the backend
+  async function restoreMood() {
+    const moodBtn = document.getElementById("mood-btn");
+    
+    // Send request to backend to erase mood
     try {
-      await fetch("YOUR_BACKEND_API_URL", {
+      await fetch('http://127.0.0.1:8887/api/mood/restore', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ liked: heartBtn.textContent === "❤️" }),
+        body: JSON.stringify({ action: "erase_mood" }),
+        credentials: 'include'
       });
+      
+      // Provide user feedback
+      moodBtn.textContent = "Mood Restored";
+      moodBtn.disabled = true;
     } catch (error) {
-      console.error("Error sending like:", error);
+      console.error("Error restoring mood:", error);
     }
   }
 </script>
+
+<button id="mood-btn" onclick="restoreMood()">Restore Mood</button>
 
 
 <script>
