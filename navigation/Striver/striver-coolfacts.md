@@ -18,222 +18,251 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
 </div>
-<style>
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 180px;
-        height: 100%;
-        background-color: #121212 !important;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 20px;
-        color: white;
-        border-right: 1px solid gray;
-    }
-    .sidebar-btn {
-        background-color: #121212;
-        color: white !important;
-        border: 2px solid cyan;
-        margin: 10px 0;
-        padding: 10px;
-        border-radius: 8px;
-        font-size: 16px;
-        width: 160px;
-        text-align: center;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    .bottom-btn {
-        margin-top: auto; 
-    }
-</style>
-
-<div class="steps-container">
-    <h2>Enter Your Cool Fact!</h2>
-    <div class="step-form">
-        <input type="text" id="coolfacts-input" placeholder="Enter cool fact" />
-        <button onclick="submitcoolfacts()">Submit Your Cool Fact!</button>
-        <button onclick="updateSteps()">Update your cool fact</button>
-        <button onclick="deleteSteps()">Delete the cool fact</button>
-    </div>
-    <div id="last-recorded-steps" class="qotd-container">
-        <h3>Last Recorded Steps:</h3>
-        <p id="cool-facts">Error fetching steps</p>
-        <p id="motivation-message"></p>
+<h1 style="color:cyan;">Cool Facts</h1>
+Explore and manage your cool facts!
+<div class="container">
+    <div class="form-container">
+        <h2>Cool Facts List</h2>
+        <ul id="coolfacts-list"></ul>
     </div>
 </div>
-
-<style>
-    /* General Layout */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #1e1e2f;
-        color: #fff;
-    }
-
-    .steps-container {
-        max-width: 600px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: #2c2c3e;
-        border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        text-align: center;
-    }
-
-    h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-    }
-
-    h3 {
-        font-size: 20px;
-        margin-top: 30px;
-    }
-
-    /* Form Styling */
-    .step-form {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    #coolfacts-input {
-        padding: 10px;
-        font-size: 16px;
-        width: 200px;
-        border: 1px solid #555;
-        border-radius: 5px;
-        background-color: #3b3b4f;
-        color: white;
-    }
-
-    #coolfacts-input::placeholder {
-        color: #aaa;
-    }
-
-    button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-        background-color: #45a049;
-    }
-
-    /* Display Section */
-    #last-recorded-steps {
-        margin-top: 20px;
-        padding: 15px;
-        background-color: #353547;
-        border-radius: 5px;
-    }
-
-    p {
-        font-size: 16px;
-        margin: 5px 0;
-    }
-</style>
-
-
-<script>
-    // Function to fetch the last recorded fact
-    // Function to fetch the last recorded fact
-    import { pythonURI } from "{{site.baseurl}}/assets/js/api/config.js";
-    async function fetchLastcoolfact() {
+<div class="container">
+    <div class="form-container">
+        <h2>Add Cool Fact</h2>
+        <label for="new-fact-age">Age:</label>
+        <input type="text" id="new-fact-age" placeholder="Enter age" />
+        <label for="new-fact-text">Cool Fact:</label>
+        <input type="text" id="new-fact-text" placeholder="Enter cool fact" />
+        <button id="add-fact-btn">Add Cool Fact</button>
+    </div>
+</div>
+<script type="module">
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+    async function fetchCoolFacts() {
         try {
-            const response = await fetch('http://127.0.0.1:8887/api/coolfacts', {
-                method: 'GET',
-                credentials: 'include', // Ensure JWT cookie is sent with the request
+            const response = await fetch(`${pythonURI}/api/coolfacts`, {
+                ...fetchOptions,
+                method: 'GET'
             });
-
-            if (response.ok) {
-                const data = await response.json();
-                const stepCount = data.steps.steps; // Accessing the steps property in the nested object
-                document.getElementById('cool-facts').innerText = coolfacts;
-                // displayMotivationMessage(stepCount);
-            } else {
-                document.getElementById('cool-facts').innerText = 'Error fetching steps';
+            if (!response.ok) {
+                throw new Error('Failed to fetch cool facts: ' + response.statusText);
             }
+            const data = await response.json();
+            const coolFactsList = document.getElementById('coolfacts-list');
+            coolFactsList.innerHTML = "";
+            data.forEach(fact => {
+                const listItem = document.createElement('li');
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.justifyContent = 'space-between';
+                const factText = document.createElement('span');
+                factText.textContent = `${fact.age}: ${fact.coolfacts}`;
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.style.marginLeft = '10px';
+                updateButton.style.padding = '2px 5px';
+                updateButton.onclick = () => promptUpdateCoolFact(fact.id, fact.age, fact.coolfacts);
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = '10px';
+                deleteButton.style.padding = '2px 5px';
+                deleteButton.onclick = () => deleteCoolFact(fact.id);
+                listItem.appendChild(factText);
+                listItem.appendChild(updateButton);
+                listItem.appendChild(deleteButton);
+                coolFactsList.appendChild(listItem);
+            });
         } catch (error) {
-            document.getElementById('cool-facts').innerText = 'Error fetching steps';
+            console.error('Error fetching cool facts:', error);
         }
     }
-    // Function to display motivational message
-    // Function to display motivational message
-    
-    function displayMotivationMessage(steps) {
-        const messageElement = document.getElementById('motivation-message');
-        if (steps >= 6000) {
-            messageElement.innerText = 'Great Job!';
-        } else if (steps >= 4000) {
-            messageElement.innerText = 'Good job!';
-        } else {
-            messageElement.innerText = 'Lock in!';
+    async function addCoolFact() {
+        const age = document.getElementById('new-fact-age').value;
+        const coolfacts = document.getElementById('new-fact-text').value;
+        try {
+            const response = await fetch(`${pythonURI}/api/coolfacts`, {
+                ...fetchOptions,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ age, coolfacts })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to add cool fact: ' + response.statusText);
+            }
+            alert('Cool fact added successfully!');
+            document.getElementById('new-fact-age').value = ''; // Clear input
+            document.getElementById('new-fact-text').value = ''; // Clear input
+            fetchCoolFacts(); // Refresh cool facts list
+        } catch (error) {
+            console.error('Error adding cool fact:', error);
+            alert('Error adding cool fact: ' + error.message);
         }
-    } 
-
-
-    // Function to submit the steps
-   async function submitcoolfacts() {
-    const factInput = document.getElementById('cool-facts');
-    const steps = factInput.value; // Keep input as a string
-
-    try {
-        const response = await fetch('http://127.0.0.1:8887/api/coolfacts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ steps }), // Send the string directly
-            credentials: 'include',  // Ensure JWT cookie is sent with the request
-        });
-
-        if (response.ok) {
-            await fetchcoolfact(); // Fetch and display the updated data after submission
-        } else {
-            alert('Error submitting steps');
-        }
-    } catch (error) {
-        alert('Error submitting steps');
     }
-}
-
-async function deleteSteps() {
-    try {
-        const response = await fetch('http://127.0.0.1:8887/api/steps', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include', // Ensure JWT cookie is sent with the request
-        });
-
-        if (response.ok) {
-            document.getElementById('cool-facts').innerText = 'No steps recorded';
-        } else {
-            const errorData = await response.json();
-            alert('Error deleting steps: ' + errorData.message);
+    async function promptUpdateCoolFact(id, age, coolfacts) {
+        const updatedAge = prompt('Enter new age:', age);
+        const updatedCoolFact = prompt('Enter new cool fact:', coolfacts);
+        if (updatedAge && updatedCoolFact) {
+            try {
+                const response = await fetch(`${pythonURI}/api/coolfacts`, {
+                    ...fetchOptions,
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id, age: updatedAge, coolfacts: updatedCoolFact })
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to update cool fact: ' + response.statusText);
+                }
+                alert('Cool fact updated successfully!');
+                fetchCoolFacts(); // Refresh cool facts list
+            } catch (error) {
+                console.error('Error updating cool fact:', error);
+                alert('Error updating cool fact: ' + error.message);
+            }
         }
-    } catch (error) {
-        console.error('Error deleting steps:', error);
-        alert('Error deleting steps: ' + error.message);
     }
-}
-
-
-    // Fetch the last recorded steps on page load
-    window.onload = fetchLastcoolfact;
+    async function deleteCoolFact(id) {
+        try {
+            const response = await fetch(`${pythonURI}/api/coolfacts`, {
+                ...fetchOptions,
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id })
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete cool fact: ' + response.statusText);
+            }
+            alert('Cool fact deleted successfully!');
+            fetchCoolFacts(); // Refresh cool facts list
+        } catch (error) {
+            console.error('Error deleting cool fact:', error);
+            alert('Error deleting cool fact: ' + error.message);
+        }
+    }
+    document.getElementById('add-fact-btn').addEventListener('click', addCoolFact);
+    fetchCoolFacts();
 </script>
+<style>
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #121212;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+h1, h2 {
+  text-align: center;
+}
+.container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  width: 100%;
+  background-color: #2C3E50;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #ECF0F1;
+}
+.form-container label, .form-container input, .form-container textarea, .form-container select, .form-container button {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 100%;
+}
+.form-container button {
+  background-color: #34495E;
+  color: #ECF0F1;
+  cursor: pointer;
+}
+.form-container button:hover {
+  background-color: #1A252F;
+}
+#coolfacts-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #34495E;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+#coolfacts-list button {
+  background-color: #E74C3C;
+  color: #ECF0F1;
+  border: none;
+  padding: 2px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px; /* Make the button smaller */
+  width: 60px; /* Make the button smaller horizontally */
+  margin-left: 0; /* Move the button closer */
+}
+#coolfacts-list button.update-btn {
+  background-color: #3498DB;
+  margin-left: 10px; /* Add some space between buttons */
+}
+#coolfacts-list button.update-btn:hover {
+  background-color: #2980B9;
+}
+#coolfacts-list span {
+  flex-grow: 1; /* Ensure the text takes up available space */
+}
+#coolfacts-list button:hover {
+  background-color: #C0392B;
+}
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 100%;
+  background-color: #121212 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  color: white;
+  border-right: 1px solid gray;
+}
+.sidebar-btn {
+  background-color: #121212;
+  color: white !important;
+  border: 2px solid cyan;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 160px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+}
+.bottom-btn {
+  margin-top: auto; /* Pushes the Terms button to the bottom */
+}
+.sidebar-btn:hover {
+  background-color: #1E1E1E;
+  transform: scale(1.05);
+}
+.sidebar-btn.active {
+  background-color: #333;
+  font-weight: bold;
+}
+</style>
