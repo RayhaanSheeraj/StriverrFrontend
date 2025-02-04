@@ -1,7 +1,7 @@
 ### ✅ **AWS Deployment Checklist**
 
 #### **1. Prerequisites**
-- [ ] Access an active **AWS account**.
+- [ ] Access an active **AWS account**. 
 - [ ] Create an **IAM user** with necessary permissions.
 - [ ] Install and configure the **AWS CLI**. [AWS CLI Installation Guide](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html).
 
@@ -43,9 +43,8 @@
   ```
 
 #### **6. Launching an EC2 Instance**
-- [ ] Log into **AWS Console** → Go to **EC2 Dashboard**.
+- [ ] Log into **AWS Console** → Go to **EC2 Dashboard**. To login to the deployment server on AWS EC2 you will use cockpit backdoor. https://cockpit.stu.nighthawkcodingsociety.com/
 - [ ] Launch a new **EC2 instance**.
-- [ ] (Optional) Use **Cockpit** for managing the server.
 
 #### **7. Application Deployment**
 - [ ] Ensure **port 8503** is open and accessible:
