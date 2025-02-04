@@ -146,103 +146,106 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     }
 </style>
 
+<script type="module">
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
-<script>
-    // Function to fetch the last recorded steps
-    // Function to fetch the last recorded steps
-    async function fetchLastSteps() {
-        try {
-            const response = await fetch('http://127.0.0.1:8887/api/steps', {
-                method: 'GET',
-                credentials: 'include', // Ensure JWT cookie is sent with the request
-            });
+// Function to fetch the last recorded steps
+window.fetchLastSteps = async function fetchLastSteps() {
+    try {
+        const response = await fetch(`${pythonURI}/api/steps`, {
+            method: 'GET',
+            credentials: 'include', // Ensure JWT cookie is sent with the request
+        });
 
-            if (response.ok) {
-                const data = await response.json();
-                const stepCount = data.steps.steps; // Accessing the steps property in the nested object
-                document.getElementById('steps-display').innerText = stepCount;
-                displayMotivationMessage(stepCount);
-            } else {
-                document.getElementById('steps-display').innerText = 'Error fetching steps';
-            }
-        } catch (error) {
+        if (response.ok) {
+            const data = await response.json();
+            const stepCount = data.steps.steps; // Accessing the steps property in the nested object
+            document.getElementById('steps-display').innerText = stepCount;
+            displayMotivationMessage(stepCount);
+        } else {
             document.getElementById('steps-display').innerText = 'Error fetching steps';
         }
+    } catch (error) {
+        document.getElementById('steps-display').innerText = 'Error fetching steps';
     }
-    // Function to display motivational message
-    // Function to display motivational message
-    function displayMotivationMessage(steps) {
-        const messageElement = document.getElementById('motivation-message');
-        if (steps >= 6000) {
-            messageElement.innerText = 'Great Job!';
-        } else if (steps >= 4000) {
-            messageElement.innerText = 'Good job!';
-        } else {
-            messageElement.innerText = 'Lock in!';
-        }
-    }
-
-
-    // Function to submit the steps
-    async function submitSteps() {
-        const stepsInput = document.getElementById('steps-input');
-        const steps = parseInt(stepsInput.value, 10);
-
-        if (isNaN(steps) || steps <= 0) {
-            alert('Please enter a valid number of steps');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://127.0.0.1:8887/api/steps', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ steps }),
-                credentials: 'include',  // Ensure JWT cookie is sent with the request
-            });
-
-            if (response.ok) {
-                await fetchLastSteps();  // Fetch and display the updated steps after submission
-            } else {
-                alert('Error submitting steps');
-            }
-        } catch (error) {
-            alert('Error submitting steps');
-        }
-    }
-    async function updateSteps() {
-        const steps = parseInt(prompt('Please enter the new number of steps:'), 10);
-
-        if (isNaN(steps) || steps <= 0) {
-            alert('Please enter a valid number of steps');
-            return;
-        }
-
-        try {
-            const response = await fetch('http://127.0.0.1:8887/api/steps', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ steps }),
-                credentials: 'include',  // Ensure JWT cookie is sent with the request
-            });
-
-            if (response.ok) {
-                await fetchLastSteps();  // Fetch and display the updated steps after submission
-            } else {
-                alert('Error submitting steps');
-            }
-        } catch (error) {
-            alert('Error submitting steps');
-        }
 }
 
-async function deleteSteps() {
+// Function to display motivational message
+function displayMotivationMessage(steps) {
+    const messageElement = document.getElementById('motivation-message');
+    if (steps >= 6000) {
+        messageElement.innerText = 'Great Job!';
+    } else if (steps >= 4000) {
+        messageElement.innerText = 'Good job!';
+    } else {
+        messageElement.innerText = 'Lock in!';
+    }
+}
+
+// Function to submit the steps
+window.submitSteps = async function submitSteps() {
+    const stepsInput = document.getElementById('steps-input');
+    const steps = parseInt(stepsInput.value, 10);
+
+    if (isNaN(steps) || steps <= 0) {
+        alert('Please enter a valid number of steps');
+        return;
+    }
+
     try {
-        const response = await fetch('http://127.0.0.1:8887/api/steps', {
+        const response = await fetch(`${pythonURI}/api/steps`, {
+            ...fetchOptions,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ steps }),
+            credentials: 'include',  // Ensure JWT cookie is sent with the request
+        });
+
+        if (response.ok) {
+            await fetchLastSteps();  // Fetch and display the updated steps after submission
+        } else {
+            alert('Error submitting steps');
+        }
+    } catch (error) {
+        alert('Error submitting steps');
+    }
+}
+
+// Function to update the steps
+window.updateSteps = async function updateSteps() {
+    const steps = parseInt(prompt('Please enter the new number of steps:'), 10);
+
+    if (isNaN(steps) || steps <= 0) {
+        alert('Please enter a valid number of steps');
+        return;
+    }
+
+    try {
+        const response = await fetch(`${pythonURI}/api/steps`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ steps }),
+            credentials: 'include',  // Ensure JWT cookie is sent with the request
+        });
+
+        if (response.ok) {
+            await fetchLastSteps();  // Fetch and display the updated steps after submission
+        } else {
+            alert('Error updating steps');
+        }
+    } catch (error) {
+        alert('Error updating steps');
+    }
+}
+
+// Function to delete the steps
+window.deleteSteps = async function deleteSteps() {
+    try {
+        const response = await fetch(`${pythonURI}/api/steps`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -262,7 +265,6 @@ async function deleteSteps() {
     }
 }
 
+// Fetch the last recorded steps on page load
 
-    // Fetch the last recorded steps on page load
-    window.onload = fetchLastSteps;
 </script>
