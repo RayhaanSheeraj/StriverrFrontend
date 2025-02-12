@@ -453,7 +453,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
 
         // Send the mood to the server with JWT from cookie
         try {
-            const response = await fetch('http://127.0.0.1:8887/api/mood', {
+            const response = await fetch('http://127.0.0.1:8503/api/mood', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -566,7 +566,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
     
     // Send request to backend to erase mood
     try {
-      await fetch('http://127.0.0.1:8887/api/mood/restore', {
+      await fetch('http://127.0.0.1:8503/api/mood/restore', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -582,10 +582,31 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
       console.error("Error restoring mood:", error);
     }
   }
+
+  async function deleteMood() {
+    const moodBtn = document.getElementById("mood-btn");
+    
+    // Send request to backend to erase mood
+    try {
+      await fetch('http://127.0.0.1:8503/api/mood', {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: 'include'
+      });
+      
+      // Provide user feedback
+      moodBtn.textContent = "Mood Deleted";
+      moodBtn.disabled = true;
+    } catch (error) {
+      console.error("Error deleting mood:", error);
+    }
+  }
 </script>
 
 <button id="mood-btn" onclick="restoreMood()">Restore Mood</button>
-
+<button id="mood-btn" onclick="deleteMood()">Delete Mood</button>
 
 <script>
     const boxElement = document.querySelector(".instructions-box");
