@@ -91,6 +91,7 @@
   git pull
   docker-compose build
   docker-compose up -d
+  sudo cp -f striverr.nginx_file /etc/nginx/sites-available/striverr.stu
   ```
 ✅ Troubleshoot if needed:
   ```bash
