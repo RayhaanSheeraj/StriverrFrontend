@@ -266,5 +266,6 @@ window.deleteSteps = async function deleteSteps() {
 }
 
 // Fetch the last recorded steps on page load
+document.addEventListener('DOMContentLoaded', fetchLastSteps);
 
 </script>
