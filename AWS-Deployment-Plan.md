@@ -83,6 +83,7 @@ Use the
   cat striverr.stu
   ```
 to check that the contents of the nginx file are correctly copied into striverr.stu in sites-available.
+
 ✅ Secure the server with **Certbot (SSL)**:
   ```bash
   sudo certbot --nginx
