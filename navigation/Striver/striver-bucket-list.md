@@ -17,6 +17,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
+    <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
 </div>
 
 <h1 style="color:cyan;">Bucket List</h1>
