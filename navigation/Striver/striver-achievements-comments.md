@@ -27,7 +27,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     top: 0;
     width: 150px;
     height: 100%;
-    background-color: #1c1c1c; /* Match the sidebar background */
+    background-color: #121212; /* Match the sidebar background */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,7 +97,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         font-size: 16px;
         border: 1px solid #ddd;
         outline: none;
-        background-color: #f3f3f3;
+        background-color: #121212;
         border-radius: 30px;
         box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
         color: #333;
@@ -114,7 +114,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         padding: 10px 0;
     }
     .message-bubble {
-        background-color: #218aff;
+        background-color: #2C3E50;
         padding: 10px;
         border-radius: 10px;
         margin: 5px 0;
@@ -122,7 +122,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         word-wrap: break-word;
     }
     .ai-bubble {
-        background-color: #e0e0e0;
+        background-color: #2C3E50;
         padding: 10px;
         border-radius: 10px;
         margin: 5px 0;
