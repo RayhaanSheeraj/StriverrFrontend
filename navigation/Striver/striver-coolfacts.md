@@ -111,7 +111,12 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ id, age: updatedAge, coolfacts: updatedCoolFact })
+                    body: JSON.stringify({ 
+                        coolfacts, 
+                        age, 
+                        new_coolfacts: updatedCoolFact, 
+                        new_age: updatedAge 
+                    })
                 });
                 if (!response.ok) {
                     throw new Error('Failed to update cool fact: ' + response.statusText);

@@ -17,6 +17,18 @@ author: Hithin
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
+    <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
+</div>
+
+
+<button id="mood-btn" onclick="displayMood()">Show Current Mood</button>
+<button id="mood-btn" onclick="restoreMood()">Restore Mood</button>
+<button id="mood-btn" onclick="deleteMood()">Delete Mood</button>
+
+<div id="mood-modal" class="modal">
+    <h3>Current Mood</h3>
+    <p id="current-mood-text">Loading...</p>
+    <button onclick="closeMoodModal()">Close</button>
 </div>
 
 <style>
@@ -290,7 +302,9 @@ author: Hithin
     }
 </style>
 
-<script>
+<script type="module">
+
+
     const names = ["Striver"];
     const states = ["Iowa", "California", "New York", "Texas", "Florida", "Nevada", "Ohio", "Michigan"];
 
@@ -478,6 +492,35 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
     }
 });
 
+    // Function to Display Mood in a Popup
+        async function displayMood() {
+            try {
+                const response = await fetch(`${pythonURI}/api/mood`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: 'include'
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch mood.");
+
+                const data = await response.json();
+                const mood = data.mood || "No mood set.";
+
+                document.getElementById("current-mood-text").textContent = mood;
+                document.getElementById("mood-modal").style.display = "block";
+
+            } catch (error) {
+                console.error("Error fetching mood:", error);
+                document.getElementById("current-mood-text").textContent = "Error retrieving mood.";
+                document.getElementById("mood-modal").style.display = "block";
+            }
+        }
+
+     // Attach event listeners after the DOM has loaded
+    document.getElementById("mood-btn-show").addEventListener("click", displayMood);
+    document.getElementById("mood-btn-restore").addEventListener("click", restoreMood);
+    document.getElementById("mood-btn-delete").addEventListener("click", deleteMood);
+
 
 
     function triggerFileUpload() {
@@ -535,6 +578,11 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
         window.location.href = '{{site.baseurl}}/create_and_compete/realityroom';
     }
     }
+
+    window.onload = function() {
+    document.getElementById("mood-btn").addEventListener("click", displayMood);
+};
+
 
 </script>
 
@@ -605,8 +653,6 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
   }
 </script>
 
-<button id="mood-btn" onclick="restoreMood()">Restore Mood</button>
-<button id="mood-btn" onclick="deleteMood()">Delete Mood</button>
 
 <script>
     const boxElement = document.querySelector(".instructions-box");

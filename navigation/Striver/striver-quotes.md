@@ -17,6 +17,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
+    <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
 </div>
 
 <h1 style="color:cyan;">Quotes</h1>
@@ -85,58 +86,56 @@ Explore quotes!
 </div>
 
 <script>
-    const apiUrl = 'http://127.0.0.1:8887/api/quotes';
-
-    // Static quotes dataset (fallback if API is unavailable)
-    const quotesDataset = [
-        { text: "The only way to do great work is to love what you do.", category: "motivational" },
-        { text: "Don't watch the clock; do what it does. Keep going.", category: "motivational" },
-        { text: "Winning isn’t everything, but wanting to win is.", category: "sports" },
-        { text: "Champions keep playing until they get it right.", category: "sports" },
-        { text: "Hard work beats talent when talent doesn’t work hard.", category: "sports" },
-        { text: "Success is not the key to happiness. Happiness is the key to success.", category: "common" },
-        { text: "Happiness is not by chance, but by choice.", category: "common" },
-        { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "common" },
-        { text: "Believe you can, and you're halfway there.", category: "common" },
-        { text: "In the middle of every difficulty lies opportunity.", category: "common" },
-        { text: "Never give up on something you can’t go a day without thinking about.", category: "motivational" },
-        { text: "It’s not the will to win that matters—everyone has that. It’s the will to prepare to win that matters.", category: "sports" }
-    ];
+  import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
     async function fetchQuotes() {
-        const category = document.getElementById('category').value;
-        const quotesList = document.getElementById('quotes-list');
-        quotesList.innerHTML = '';
-
         try {
-            const response = await fetch(apiUrl + '/quote');
-            if (response.ok) {
-                const quotes = await response.json();
-                let filteredQuotes = quotes;
+            const category = document.getElementById('category').value;
+            const response = await fetch(`${pythonURI}/api/quote?category=${category}`, {
+                ...fetchOptions,
+                method: 'GET'
+            });
 
-                if (category) {
-                    filteredQuotes = quotes.filter(q => q.category === category);
-                }
-
-                filteredQuotes.forEach((quote) => {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = quote.text;
-                    quotesList.appendChild(listItem);
-                });
-            } else {
-                throw new Error('API unavailable, falling back to local dataset');
+            if (!response.ok) {
+                throw new Error('Failed to fetch quotes: ' + response.statusText);
             }
-        } catch {
-            let filteredQuotes = quotesDataset;
-            if (category) {
-                filteredQuotes = quotesDataset.filter(q => q.category === category);
-            }
+            const data = await response.json();
+            const quotesList = document.getElementById('quotes-list');
+            quotesList.innerHTML = "";
 
-            filteredQuotes.forEach((quote) => {
+            data.quotes.forEach(quote => {
                 const listItem = document.createElement('li');
-                listItem.textContent = quote.text;
+                listItem.style.display = 'flex';
+                listItem.style.alignItems = 'center';
+                listItem.style.justifyContent = 'space-between';
+
+                const quoteText = document.createElement('span');
+                quoteText.textContent = quote;
+
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.style.marginLeft = '10px'; // Add some space between buttons
+                updateButton.style.padding = '2px 5px';
+                updateButton.style.fontSize = '12px'; // Make the button smaller
+                updateButton.style.width = '60px'; // Make the button smaller horizontally
+                updateButton.classList.add('update-btn');
+                updateButton.onclick = () => promptUpdateQuote(quote, category);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.marginLeft = '10px'; // Add some space between buttons
+                deleteButton.style.padding = '2px 5px';
+                deleteButton.style.fontSize = '12px'; // Make the button smaller
+                deleteButton.style.width = '60px'; // Make the button smaller horizontally
+                deleteButton.onclick = () => deleteQuote(quote, category);
+
+                listItem.appendChild(quoteText);
+                listItem.appendChild(updateButton);
+                listItem.appendChild(deleteButton);
                 quotesList.appendChild(listItem);
             });
+        } catch (error) {
+            console.error('Error fetching quotes:', error);
         }
     }
 

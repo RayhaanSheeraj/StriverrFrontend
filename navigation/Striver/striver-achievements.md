@@ -60,20 +60,20 @@ Share your achievements with others!
         border-radius: 5px;
         border: none;
         background-color: #34495E;
-        color: #ECF0F1;
+        color: #2C3E50;
         cursor: pointer;
     }
 </style>
 
 <div class="container">
     <div class="form-container">
-        <h2>Select Group and Channel</h2>
+        <h2 style="color:#28cee8;">Select Group and Channel</h2>
         <form id="selectionForm">
-            <label for="group_id">Group:</label>
+            <label style="color:#28cee8;" for="group_id">Group:</label>
             <select id="group_id" name="group_id" required>
                 <option value="">Select a group</option>
             </select>
-            <label for="channel_id">Channel:</label>
+            <label style="color:#28cee8;" for="channel_id">Channel:</label>
             <select id="channel_id" name="channel_id" required>
                 <option value="">Select a channel</option>
             </select>
@@ -84,11 +84,11 @@ Share your achievements with others!
 
 <div class="container">
     <div class="form-container">
-        <h2>Add New Post</h2>
+        <h2 style="color:#28cee8;">Add New Post</h2>
         <form id="postForm">
-            <label for="title">Title:</label>
+            <label style="color:#28cee8;" for="title">Title:</label>
             <input type="text" id="title" name="title" required>
-            <label for="comment">Comment:</label>
+            <label style="color:#28cee8;" for="comment">Comment:</label>
             <textarea id="comment" name="comment" required></textarea>
             <button type="submit">Add Post</button>
         </form>
@@ -408,7 +408,7 @@ Share your achievements with others!
     /* Form Styling */
     .form-container {
         padding: 20px;
-        background-color: #f4f4f4;
+        background-color: #2C3E50;
         border-radius: 12px;
         width: calc(100% - 400px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -425,7 +425,7 @@ Share your achievements with others!
         flex: 1;
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid #28cee8;
         font-size: 16px;
     }
 
@@ -458,7 +458,7 @@ Share your achievements with others!
     button[type="submit"] {
         align-self: flex-start;
         padding: 10px 20px;
-        background-color: #1da1f2;
+        background-color:rgb(34, 59, 75);
         color: white;
         border: none;
         border-radius: 8px;
@@ -470,7 +470,7 @@ Share your achievements with others!
     }
 
     button[type="submit"]:hover {
-        background-color: #1a91da;
+        background-color:rgb(3, 54, 85);
     }
 
     /* Channels Container */
@@ -487,7 +487,7 @@ Share your achievements with others!
         width: calc(50% - 20px);
         min-width: 300px;
         padding: 20px;
-        background-color: #ffffff;
+        background-color: #2C3E50;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         text-align: left;
@@ -496,11 +496,11 @@ Share your achievements with others!
     .card-title {
         font-size: 1.2em;
         font-weight: bold;
-        color: #333;
+        color: #28cee8;
     }
 
     .card-description {
-        color: #555;
+        color: #28cee8;
         font-size: 1em;
         margin-top: 10px;
     }
