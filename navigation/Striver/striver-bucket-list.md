@@ -94,10 +94,12 @@ Explore and manage your bucket list!
 
 <script type="module">
 
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+
     async function fetchBucketList() {
         try {
             const category = document.getElementById('category').value;
-            const response = await fetch('http://127.0.0.1:8887/api/bucketlist', {});
+            const response = await fetch('http://127.0.0.1:8503/api/bucketlist', {});
 
             if (!response.ok) {
                 throw new Error('Failed to fetch bucket list: ' + response.statusText);
@@ -137,7 +139,7 @@ Explore and manage your bucket list!
             category: JSON.stringify(category),
         };
         try {
-            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
+            const response = await fetch(`http://127.0.0.1:8503/api/bucketlist`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -158,57 +160,67 @@ Explore and manage your bucket list!
         }
     }
 
-    async function updateBucketListItem() {
-        const oldItem = document.getElementById('old-bucket-item').value;
-        const newItem = document.getElementById('updated-bucket-item').value;
-        const category = document.getElementById('update-bucket-category').value;
-        try {
-            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
-                ...fetchOptions,
-                method: 'PUT',
-                body: JSON.stringify({ old_item: oldItem, new_item: newItem, category: category })
-            });
+    async function putBucketListItem(id, newStatus) {
+    const putData = {
+        id: id,
+        status: newStatus  // Assuming we're updating the status field
+    };
 
-            if (!response.ok) {
-                throw new Error('Failed to update bucket list item: ' + response.statusText);
-            }
+    try {
+        const response = await fetch(`http://127.0.0.1:8503/api/bucketlist`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(putData)
+        });
 
-            alert('Bucket list item updated successfully!');
-            document.getElementById('old-bucket-item').value = ''; // Clear input
-            document.getElementById('updated-bucket-item').value = ''; // Clear input
-            fetchBucketList(); // Refresh bucket list
-        } catch (error) {
-            console.error('Error updating bucket list item:', error);
-            alert('Error updating bucket list item: ' + error.message);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
+        const data = await response.json();
+        console.log('Put response:', data);
+    } catch (error) {
+        console.error("Error putting data:", error);
+    }
+} 
+
+async function deleteBucketListItem() {
+    const item = document.getElementById('delete-bucket-item').value.trim();
+    const category = document.getElementById('delete-bucket-category').value.trim();
+
+    if (!item || !category) {
+        alert("Please enter both item and category.");
+        return;
     }
 
-    async function deleteBucketListItem() {
-        const item = document.getElementById('delete-bucket-item').value;
-        const category = document.getElementById('delete-bucket-category').value;
-        try {
-            const response = await fetch(`http://127.0.0.1:8887/api/bucketlist`, {
-                ...fetchOptions,
-                method: 'DELETE',
-                body: JSON.stringify({ item: item, category: category })
-            });
+    try {
+        const response = await fetch(`${pythonURI}/api/bucketlist`, {
+            ...fetchOptions,
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ item, category })
+        });
 
-            if (!response.ok) {
-                throw new Error('Failed to delete bucket list item: ' + response.statusText);
-            }
-
-            alert('Bucket list item deleted successfully!');
-            document.getElementById('delete-bucket-item').value = ''; // Clear input
-            fetchBucketList(); // Refresh bucket list
-        } catch (error) {
-            console.error('Error deleting bucket list item:', error);
-            alert('Error deleting bucket list item: ' + error.message);
+        if (!response.ok) {
+            throw new Error('Failed to delete bucket list item: ' + response.statusText);
         }
-    }
 
+        alert('Bucket list item deleted successfully!');
+        document.getElementById('delete-bucket-item').value = ''; // Clear input
+        document.getElementById('delete-bucket-category').value = ''; 
+        fetchBucketList(); // Refresh bucket list
+    } catch (error) {
+        console.error('Error deleting bucket list item:', error);
+        alert('Error deleting bucket list item: ' + error.message);
+    }
+}
     document.getElementById('category').addEventListener('change', fetchBucketList);
     document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
-    document.getElementById('update-bucket-item-btn').addEventListener('click', updateBucketListItem);
+    document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
     document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
     fetchBucketList();
 </script>
