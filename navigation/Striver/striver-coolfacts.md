@@ -19,7 +19,10 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
 </div>
 <h1 style="color:cyan;">Cool Facts</h1>
-Explore and manage your cool facts!
+<h2 id="changing-text" style="color:#08f513">This page is dedicated to you posting the factual events or things of those you look up too</h2>
+<h3 style="color:#08f513">The way this works is that you input a fact about someone you look up to, and then add after how long that fact will relate to you as well</h3>
+<br>
+<h3>For example ...</h3>
 <div class="container">
     <div class="form-container">
         <h2>Cool Facts List</h2>
@@ -38,119 +41,129 @@ Explore and manage your cool facts!
 </div>
 <script type="module">
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-    async function fetchCoolFacts() {
-        try {
-            const response = await fetch(`${pythonURI}/api/coolfacts`, {
-                ...fetchOptions,
-                method: 'GET'
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch cool facts: ' + response.statusText);
-            }
-            const data = await response.json();
-            const coolFactsList = document.getElementById('coolfacts-list');
-            coolFactsList.innerHTML = "";
-            data.forEach(fact => {
-                const listItem = document.createElement('li');
-                listItem.style.display = 'flex';
-                listItem.style.alignItems = 'center';
-                listItem.style.justifyContent = 'space-between';
-                const factText = document.createElement('span');
-                factText.textContent = `${fact.age}: ${fact.coolfacts}`;
-                const updateButton = document.createElement('button');
-                updateButton.textContent = 'Update';
-                updateButton.style.marginLeft = '10px';
-                updateButton.style.padding = '2px 5px';
-                updateButton.onclick = () => promptUpdateCoolFact(fact.id, fact.age, fact.coolfacts);
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.style.marginLeft = '10px';
-                deleteButton.style.padding = '2px 5px';
-                deleteButton.onclick = () => deleteCoolFact(fact.id);
-                listItem.appendChild(factText);
-                listItem.appendChild(updateButton);
-                listItem.appendChild(deleteButton);
-                coolFactsList.appendChild(listItem);
-            });
-        } catch (error) {
-            console.error('Error fetching cool facts:', error);
+async function fetchCoolFacts() {
+    try {
+        const response = await fetch(`${pythonURI}/api/coolfacts`, {
+            ...fetchOptions,
+            method: 'GET'
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch cool facts: ' + response.statusText);
         }
+        const data = await response.json();
+        const coolFactsList = document.getElementById('coolfacts-list');
+        coolFactsList.innerHTML = "";
+        data.forEach(fact => {
+            const listItem = document.createElement('li');
+            listItem.style.display = 'flex';
+            listItem.style.alignItems = 'center';
+            listItem.style.justifyContent = 'space-between';
+            const factText = document.createElement('span');
+            factText.textContent = `${fact.age}: ${fact.coolfacts}`;
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.style.marginLeft = '10px';
+            updateButton.style.padding = '2px 5px';
+            updateButton.onclick = () => promptUpdateCoolFact(fact.id, fact.age, fact.coolfacts);
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.style.marginLeft = '10px';
+            deleteButton.style.padding = '2px 5px';
+            deleteButton.onclick = () => deleteCoolFact(fact.id);
+            listItem.appendChild(factText);
+            listItem.appendChild(updateButton);
+            listItem.appendChild(deleteButton);
+            coolFactsList.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error('Error fetching cool facts:', error);
     }
-    async function addCoolFact() {
-        const age = document.getElementById('new-fact-age').value;
-        const coolfacts = document.getElementById('new-fact-text').value;
+}
+async function addCoolFact() {
+    const age = document.getElementById('new-fact-age').value;
+    const coolfacts = document.getElementById('new-fact-text').value;
+    try {
+        const response = await fetch(`${pythonURI}/api/coolfacts`, {
+            ...fetchOptions,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ age, coolfacts })
+        });
+        if (!response.ok) {
+            throw new Error('Failed to add cool fact: ' + response.statusText);
+        }
+        alert('Cool fact added successfully!');
+        document.getElementById('new-fact-age').value = ''; // Clear input
+        document.getElementById('new-fact-text').value = ''; // Clear input
+        fetchCoolFacts(); // Refresh cool facts list
+    } catch (error) {
+        console.error('Error adding cool fact:', error);
+        alert('Error adding cool fact: ' + error.message);
+    }
+}
+async function promptUpdateCoolFact(id, age, coolfacts) {
+    const updatedAge = prompt('Enter new age:', age);
+    const updatedCoolFact = prompt('Enter new cool fact:', coolfacts);
+    if (updatedAge && updatedCoolFact) {
         try {
             const response = await fetch(`${pythonURI}/api/coolfacts`, {
                 ...fetchOptions,
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ age, coolfacts })
+                body: JSON.stringify({ 
+                    coolfacts, 
+                    age, 
+                    new_coolfacts: updatedCoolFact, 
+                    new_age: updatedAge 
+                })
             });
             if (!response.ok) {
-                throw new Error('Failed to add cool fact: ' + response.statusText);
+                throw new Error('Failed to update cool fact: ' + response.statusText);
             }
-            alert('Cool fact added successfully!');
-            document.getElementById('new-fact-age').value = ''; // Clear input
-            document.getElementById('new-fact-text').value = ''; // Clear input
+            alert('Cool fact updated successfully!');
             fetchCoolFacts(); // Refresh cool facts list
         } catch (error) {
-            console.error('Error adding cool fact:', error);
-            alert('Error adding cool fact: ' + error.message);
+            console.error('Error updating cool fact:', error);
+            alert('Error updating cool fact: ' + error.message);
         }
     }
-    async function promptUpdateCoolFact(id, age, coolfacts) {
-        const updatedAge = prompt('Enter new age:', age);
-        const updatedCoolFact = prompt('Enter new cool fact:', coolfacts);
-        if (updatedAge && updatedCoolFact) {
-            try {
-                const response = await fetch(`${pythonURI}/api/coolfacts`, {
-                    ...fetchOptions,
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                        coolfacts, 
-                        age, 
-                        new_coolfacts: updatedCoolFact, 
-                        new_age: updatedAge 
-                    })
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to update cool fact: ' + response.statusText);
-                }
-                alert('Cool fact updated successfully!');
-                fetchCoolFacts(); // Refresh cool facts list
-            } catch (error) {
-                console.error('Error updating cool fact:', error);
-                alert('Error updating cool fact: ' + error.message);
-            }
+}
+async function deleteCoolFact(id) {
+    try {
+        const response = await fetch(`${pythonURI}/api/coolfacts`, {
+            ...fetchOptions,
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id })
+        });
+        if (!response.ok) {
+            throw new Error('Failed to delete cool fact: ' + response.statusText);
         }
+        alert('Cool fact deleted successfully!');
+        fetchCoolFacts(); // Refresh cool facts list
+    } catch (error) {
+        console.error('Error deleting cool fact:', error);
+        alert('Error deleting cool fact: ' + error.message);
     }
-    async function deleteCoolFact(id) {
-        try {
-            const response = await fetch(`${pythonURI}/api/coolfacts`, {
-                ...fetchOptions,
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to delete cool fact: ' + response.statusText);
-            }
-            alert('Cool fact deleted successfully!');
-            fetchCoolFacts(); // Refresh cool facts list
-        } catch (error) {
-            console.error('Error deleting cool fact:', error);
-            alert('Error deleting cool fact: ' + error.message);
-        }
+}
+document.getElementById('add-fact-btn').addEventListener('click', addCoolFact);
+fetchCoolFacts();
+function changeTextColor() {
+    const getRandomHexColor = () => {
+    return `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
+    };
+    const element = document.getElementById('changing-text');
+    if (element) {
+        element.style.color = getRandomHexColor();
     }
-    document.getElementById('add-fact-btn').addEventListener('click', addCoolFact);
-    fetchCoolFacts();
+}
+setInterval(changeTextColor, 500);
 </script>
 <style>
 /* General Styles */

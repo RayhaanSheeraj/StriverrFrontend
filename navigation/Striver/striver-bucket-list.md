@@ -140,7 +140,8 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
             category: JSON.stringify(category),
         };
         try {
-            const response = await fetch(`http://127.0.0.1:8503/api/bucketlist`, {
+            const response = await fetch(`${pythonURI}/api/bucketlist`, {
+                ...fethOptions
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
