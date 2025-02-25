@@ -80,8 +80,9 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         max-width: 600px;
         margin: 50px auto;
         padding: 20px;
-        background-color: #2c2c3e;
+        background-color: #1A252F;
         border-radius: 10px;
+        border: 1px solid #28cee8;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         text-align: center;
     }
@@ -108,9 +109,9 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         padding: 10px;
         font-size: 16px;
         width: 200px;
-        border: 1px solid #555;
+        border: 1px solid #28cee8;
         border-radius: 5px;
-        background-color: #3b3b4f;
+        background-color: #1A252F;
         color: white;
     }
 
@@ -123,7 +124,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         font-size: 16px;
         background-color: #4CAF50;
         color: white;
-        border: none;
+        border: 1px solid #28cee8;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s ease;
@@ -137,8 +138,9 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     #last-recorded-steps {
         margin-top: 20px;
         padding: 15px;
-        background-color: #353547;
+        background-color: #1A252F;
         border-radius: 5px;
+        border: 1px solid #28cee8;
     }
 
     p {
