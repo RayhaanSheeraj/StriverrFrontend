@@ -95,7 +95,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         height: 40px;
         padding: 15px 20px;
         font-size: 16px;
-        border: 1px solid #ddd;
+        border: 1px solid #28cee8;
         outline: none;
         background-color: #121212;
         border-radius: 30px;
@@ -117,6 +117,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         background-color: #2C3E50;
         padding: 10px;
         border-radius: 10px;
+        border: 1px solid #28cee8;
         margin: 5px 0;
         max-width: 80%;
         word-wrap: break-word;
@@ -125,6 +126,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         background-color: #2C3E50;
         padding: 10px;
         border-radius: 10px;
+        border: 1px solid #28cee8;
         margin: 5px 0;
         max-width: 80%;
         word-wrap: break-word;
@@ -143,7 +145,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
         width: 40px;
         height: 40px;
         color: white;
-        border: none;
+        border: 1px solid #28cee8;
         border-radius: 50%;
         align-items: center;
         justify-content: center;

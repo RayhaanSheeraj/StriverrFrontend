@@ -39,7 +39,7 @@ Share your achievements with others!
         flex-direction: column;
         max-width: 800px;
         width: 100%;
-        background-color: #2C3E50;
+        background-color: #1A252F;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -59,7 +59,7 @@ Share your achievements with others!
         padding: 10px;
         border-radius: 5px;
         border: none;
-        background-color: #34495E;
+        background-color: #1A252F;
         color: #2C3E50;
         cursor: pointer;
     }
@@ -408,8 +408,9 @@ Share your achievements with others!
     /* Form Styling */
     .form-container {
         padding: 20px;
-        background-color: #2C3E50;
+        background-color: #1A252F;;
         border-radius: 12px;
+        border: 1px solid #28cee8;
         width: calc(100% - 400px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
@@ -425,7 +426,6 @@ Share your achievements with others!
         flex: 1;
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #28cee8;
         font-size: 16px;
     }
 
@@ -433,7 +433,7 @@ Share your achievements with others!
         padding: 10px;
         background-color: #333;
         color: white;
-        border: none;
+        border: 1px solid #28cee8;
         border-radius: 50%;
         font-size: 18px;
         cursor: pointer;
@@ -448,7 +448,7 @@ Share your achievements with others!
         width: 100%;
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid #28cee8;
         font-size: 16px;
         margin-top: 10px;
         resize: none;
@@ -460,7 +460,7 @@ Share your achievements with others!
         padding: 10px 20px;
         background-color:rgb(34, 59, 75);
         color: white;
-        border: none;
+        border: 1px solid #28cee8;
         border-radius: 8px;
         font-size: 16px;
         font-weight: bold;
@@ -480,6 +480,7 @@ Share your achievements with others!
         justify-content: center;
         gap: 20px;
         padding-top: 20px;
+        border: 1px solid #28cee8;
     }
 
     /* Post Cards Styling */
@@ -491,6 +492,7 @@ Share your achievements with others!
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         text-align: left;
+        border: 1px solid #28cee8;
     }
 
     .card-title {
@@ -511,6 +513,7 @@ Share your achievements with others!
         border: none;
         padding: 8px 12px;
         border-radius: 4px;
+        border: 1px solid #28cee8;
         cursor: pointer;
         font-size: 0.9em;
         margin-top: 15px;

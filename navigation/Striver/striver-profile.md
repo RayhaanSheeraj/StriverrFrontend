@@ -100,16 +100,14 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     align-items: flex-start;
     height: 100vh;
     padding-top: 30px; 
-    background-color: #0000; 
+    background-color: #1A252F; 
   }
 
   
   .card {
     display: flex;
     flex-direction: column;
-    background-color: 
-#11d0ed
-; 
+    background-color: #1A252F; 
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -123,12 +121,14 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     display: flex;
     align-items: center;
     margin-bottom: 40px;
+    background-color: #1A252F;
   }
 
  
   .profile-picture {
     flex: 1;
     text-align: center;
+    background-color: #1A252F;
   }
 
   .profile-picture img {
@@ -143,7 +143,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
   .file-icon {
     display: inline-block;
     color: white;
-    background-color: #33b1c4;
+    background-color: #1A252F;
     padding: 12px 20px;
     border: 2px solid white;
     border-radius: 12px;
@@ -159,13 +159,14 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
   .profile-fields {
     flex: 2;
     padding-left: 30px;
+    background-color: #1A252F;
   }
 
   .profile-fields label {
     display: block;
     font-size: 18px;
     margin-bottom: 10px;
-    color: white;
+    background-color: #1A252F;
   }
 
   .profile-fields input {
@@ -173,14 +174,14 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     padding: 15px;
     font-size: 18px;
     border-radius: 12px;
-    border: 2px solid white;
-    background-color: #e57373;
-    color: white;
+    border: 2px solid #28cee8;
+    background-color: #1A252F;
+    color: #28cee8;
     margin-bottom: 20px;
   }
 
   .profile-fields input::placeholder {
-    color: #ffcccc;
+    color: #1A252F;
   }
 
   .profile-fields input:focus {
@@ -190,7 +191,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
 
   .preview-box {
     margin-top: 20px;
-    background-color: #33b1c4;
+    background-color: #1A252F;
     padding: 20px;
     border-radius: 12px;
     text-align: left;
@@ -199,12 +200,13 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
   .preview-box h2 {
     margin-bottom: 20px;
     text-align: center;
-    color: white;
+    color: #28cee8;
   }
 
   .preview-content {
     display: flex;
     align-items: center;
+    background-color: #1A252F;
   }
 
   .preview-content img {
@@ -213,13 +215,14 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     border-radius: 50%;
     object-fit: cover;
     margin-right: 20px;
-    border: 3px solid white;
+    border: 3px #28cee8;
   }
 
   .preview-text {
     color: white;
     font-size: 18px;
     line-height: 1.6;
+    background-color: #1A252F;
   }
 
   .preview-text p {

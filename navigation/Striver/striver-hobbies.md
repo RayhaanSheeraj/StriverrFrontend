@@ -234,7 +234,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #121212;
+  background-color: #1A252F;
   color: #fff;
   margin: 0;
   padding: 0;
@@ -258,11 +258,12 @@ h1, h2 {
   flex-direction: column;
   max-width: 800px;
   width: 100%;
-  background-color: #2C3E50;
+  background-color: #1A252F;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: #ECF0F1;
+  border: 1px solid #28cee8;
 }
 
 .form-container label, .form-container input, .form-container textarea, .form-container select, .form-container button {
@@ -274,9 +275,10 @@ h1, h2 {
 }
 
 .form-container button {
-  background-color: #34495E;
+  background-color: #1A252F;
   color: #ECF0F1;
   cursor: pointer;
+  border: 1px solid #28cee8;
 }
 
 .form-container button:hover {
@@ -287,7 +289,7 @@ h1, h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #34495E;
+  background-color: #1A252F;
   padding: 10px;
   margin-bottom: 5px;
   border-radius: 5px;
@@ -303,11 +305,13 @@ h1, h2 {
   font-size: 12px; /* Make the button smaller */
   width: 60px; /* Make the button smaller horizontally */
   margin-left: 0; /* Move the button closer */
+  border: 1px solid #28cee8;
 }
 
 #hobbies-list button.update-btn {
-  background-color: #3498DB;
+  background-color: #1A252F;
   margin-left: 10px; /* Add some space between buttons */
+  border: 1px solid #28cee8;
 }
 
 #hobbies-list button.update-btn:hover {
