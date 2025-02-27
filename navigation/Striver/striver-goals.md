@@ -20,13 +20,17 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
     <a href="/StriverrFrontend/Striver/striver-goals" class="sidebar-btn bottom-btn">🥅 Goals</a>
 </div>
 
-<h1 style="color:cyan;">Goals</h1>
+<h1 style="color:cyan;">GOALS 🥅 🥅 🥅</h1>
 <h2 style="color:cyan;">Retrieve a random goal and update your progress!</h2>
 
 <div class="container">
     <div class="form-container">
         <h2>Random Goal</h2>
-        <button id="fetch-goal-btn">Get Random Goal</button>
+        <button id="fetch-goal-btn">Generate Random Goal</button>
+        <h2>Retrieve Specific Goal</h2>
+        <label for="specific-goal-id">Goal ID:</label>
+        <input type="text" id="specific-goal-id" placeholder="Enter goal ID" />
+        <button id="fetch-specific-goal-btn">Retrieve Goal</button>
     </div>
 </div>
 
@@ -71,6 +75,35 @@ async function fetchRandomGoal() {
     }
 }
 
+// Fetch a specific goal by ID from the backend and display its details.
+async function fetchGoalById() {
+    const goalId = document.getElementById('specific-goal-id').value.trim();
+    if (!goalId) {
+        alert("Please enter a goal ID");
+        return;
+    }
+    try {
+        // Fetch all goals
+        const response = await fetch(`${pythonURI}/api/goals`, fetchOptions);
+        if (!response.ok) {
+            throw new Error('Failed to fetch goals: ' + response.statusText);
+        }
+        const goals = await response.json();
+        // Filter for the goal with the matching ID (using loose equality to handle type conversion)
+        const goal = goals.find(g => g.id == goalId);
+        if (!goal) {
+            alert("No goal found with that ID.");
+            return;
+        }
+        displayGoal(goal);
+    } catch (error) {
+        console.error("Error fetching specific goal:", error);
+        alert("Error fetching specific goal: " + error.message);
+    }
+}
+
+
+
 // Update the displayed goal details in the page.
 function displayGoal(goal) {
     const goalList = document.getElementById('goal-list');
@@ -80,12 +113,8 @@ function displayGoal(goal) {
     idElem.textContent = `ID: ${goal.id}`;
     goalList.appendChild(idElem);
 
-    const goalElem = document.createElement('p');
-    goalElem.textContent = `Goal: ${goal.getgoals}`;
-    goalList.appendChild(goalElem);
-
     const outputElem = document.createElement('p');
-    outputElem.textContent = `Output: ${goal.goaloutput}`;
+    outputElem.textContent = `Goal: ${goal.goaloutput}`;
     goalList.appendChild(outputElem);
 
     const progressElem = document.createElement('p');
@@ -123,6 +152,7 @@ async function updateGoalProgress() {
 }
 
 document.getElementById('fetch-goal-btn').addEventListener('click', fetchRandomGoal);
+document.getElementById('fetch-specific-goal-btn').addEventListener('click', fetchGoalById);
 document.getElementById('update-goal-btn').addEventListener('click', updateGoalProgress);
 
 // Automatically load a random goal on page load.
