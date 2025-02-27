@@ -163,8 +163,9 @@ Share your challenges with others!
     /* Form Styling */
     .form-container {
         padding: 20px;
-        background-color: #f4f4f4;
+        background-color: #1A252F;
         border-radius: 12px;
+        border: 1px solid #28cee8;
         width: calc(100% - 400px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         font-family: Arial, sans-serif;
@@ -178,14 +179,14 @@ Share your challenges with others!
         flex: 1;
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid #28cee8;
         font-size: 16px;
     }
     .file-button {
         padding: 10px;
         background-color: #333;
-        color: white;
-        border: none;
+        color: #28cee8;
+        border: 1px solid #28cee8;
         border-radius: 50%;
         font-size: 18px;
         cursor: pointer;
@@ -199,7 +200,7 @@ Share your challenges with others!
         width: 100%;
         padding: 12px;
         border-radius: 8px;
-        border: 1px solid #ddd;
+        border: 1px solid #28cee8;
         font-size: 16px;
         margin-top: 10px;
         resize: none;
@@ -210,7 +211,7 @@ Share your challenges with others!
         padding: 10px 20px;
         background-color: #1da1f2;
         color: white;
-        border: none;
+        border: 1px solid #28cee8;
         border-radius: 8px;
         font-size: 16px;
         font-weight: bold;

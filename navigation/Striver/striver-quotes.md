@@ -224,8 +224,9 @@ Explore quotes!
 <style>
 body {
   font-family: Arial, sans-serif;
-  background-color: #121212;
+  background-color: #1A252F;
   color: #fff;
+  border: 1px solid #28cee8;
   margin: 0;
   padding: 0;
 }
@@ -248,9 +249,10 @@ h1, h2 {
   flex-direction: column;
   max-width: 800px;
   width: 100%;
-  background-color: #2C3E50;
+  background-color: #1A252F;
   padding: 20px;
   border-radius: 10px;
+  border: 1px solid #28cee8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: #ECF0F1;
 }
@@ -259,12 +261,13 @@ h1, h2 {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
+  border: 1px solid #28cee8;
   border: none;
   width: 100%;
 }
 
 .form-container button {
-  background-color: #34495E;
+  background-color: #1A252F;
   color: #ECF0F1;
   cursor: pointer;
 }
@@ -320,7 +323,7 @@ h1, h2 {
 .sidebar-btn {
   background-color: #121212;
   color: white !important;
-  border: 2px solid cyan;
+  border: 1px solid #28cee8;
   margin: 10px 0;
   padding: 10px;
   border-radius: 8px;

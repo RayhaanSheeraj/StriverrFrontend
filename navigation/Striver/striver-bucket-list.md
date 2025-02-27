@@ -146,7 +146,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(postData)
+                body: JSON.stringify({ item, desc, category })
             });
 
             if (!response.ok) {
@@ -155,6 +155,8 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 
             alert('Bucket list item added successfully!');
             document.getElementById('new-bucket-item').value = ''; // Clear input
+            document.getElementById('new-bucket-desc').value = '';
+            document.getElementById('new-bucket-category').value = '';
             fetchBucketList(); // Refresh bucket list
         } catch (error) {
             console.error('Error adding bucket list item:', error);
@@ -231,10 +233,11 @@ async function deleteBucketListItem() {
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
-  background-color: #121212;
+  background-color: #1A252F;
   color: #fff;
   margin: 0;
   padding: 0;
+  border: 1px solid #28cee8;
 }
 
 h1, h2 {
@@ -255,11 +258,12 @@ h1, h2 {
   flex-direction: column;
   max-width: 800px;
   width: 100%;
-  background-color: #2C3E50;
+  background-color: #1A252F;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: #ECF0F1;
+  border: 1px solid #28cee8;
 }
 
 .form-container label, .form-container input, .form-container textarea, .form-container select, .form-container button {
@@ -271,9 +275,10 @@ h1, h2 {
 }
 
 .form-container button {
-  background-color: #34495E;
+  background-color: #1A252F;
   color: #ECF0F1;
   cursor: pointer;
+  border: 1px solid #28cee8;
 }
 
 .form-container button:hover {
