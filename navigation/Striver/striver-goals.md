@@ -56,7 +56,7 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaid
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
 // Fetch all goals from the backend, pick one at random, and display its details.
-async function fetchRandomGoal() {
+window.fetchRandomGoal = async function fetchRandomGoal() {
     try {
         const response = await fetch(`${pythonURI}/api/goals`, fetchOptions);
         if (!response.ok) {
@@ -76,7 +76,7 @@ async function fetchRandomGoal() {
 }
 
 // Fetch a specific goal by ID from the backend and display its details.
-async function fetchGoalById() {
+window.fetchGoalById = async function fetchGoalById() {
     const goalId = document.getElementById('specific-goal-id').value.trim();
     if (!goalId) {
         alert("Please enter a goal ID");
@@ -123,7 +123,7 @@ function displayGoal(goal) {
 }
 
 // Update a goal's progress using its ID.
-async function updateGoalProgress() {
+window.updateGoalProgress = async function updateGoalProgress() {
     const goalId = document.getElementById('goal-id').value;
     const newProgress = document.getElementById('goal-progress').value;
     if (!goalId || !newProgress) {
