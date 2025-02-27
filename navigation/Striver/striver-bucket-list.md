@@ -146,7 +146,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(postData)
+                body: JSON.stringify({ item, desc, category })
             });
 
             if (!response.ok) {
@@ -155,6 +155,8 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 
             alert('Bucket list item added successfully!');
             document.getElementById('new-bucket-item').value = ''; // Clear input
+            document.getElementById('new-bucket-desc').value = '';
+            document.getElementById('new-bucket-category').value = '';
             fetchBucketList(); // Refresh bucket list
         } catch (error) {
             console.error('Error adding bucket list item:', error);
