@@ -97,96 +97,75 @@ Explore and manage your bucket list!
 
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
-    async function fetchBucketList() {
-        try {
-            const category = document.getElementById('category').value;
-            const response = await fetch('http://127.0.0.1:8503/api/bucketlist', {});
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch bucket list: ' + response.statusText);
-            }
-
-            const data = await response.json();
-            console.log(data)
-            const bucketList = document.getElementById('bucket-list');
-            bucketList.innerHTML = "";
-
-            data.forEach(item => {
-
-                const titleItem = document.createElement('h3');
-                titleItem.textContent = `${item['title']} (${item['category']})`;
-                bucketList.appendChild(titleItem);
-
-                const descItem = document.createElement('p');
-                descItem.textContent = `${item['description']}`;
-                bucketList.appendChild(descItem);
-
-                const breakItem = document.createElement('br');
-                bucketList.appendChild(breakItem);
-            });
-        } catch (error) {
-            console.error('Error fetching bucket list:', error);
-        }
-    }
-
-    async function addBucketListItem() {
-        const item = document.getElementById('new-bucket-item').value;
-        const desc = document.getElementById('new-bucket-desc').value;
-        const category = document.getElementById('new-bucket-category').value;
-
-        const postData = {
-            title: JSON.stringify(item),
-            description: JSON.stringify(desc),
-            category: JSON.stringify(category),
-        };
-        try {
-            const response = await fetch(`${pythonURI}/api/bucketlist`, {
-                ...fethOptions
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(postData)
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add bucket list item: ' + response.statusText);
-            }
-
-            alert('Bucket list item added successfully!');
-            document.getElementById('new-bucket-item').value = ''; // Clear input
-            fetchBucketList(); // Refresh bucket list
-        } catch (error) {
-            console.error('Error adding bucket list item:', error);
-            alert('Error adding bucket list item: ' + error.message);
-        }
-    }
-
-    async function putBucketListItem(id, newStatus) {
-    const putData = {
-        id: id,
-        status: newStatus  // Assuming we're updating the status field
-    };
-
+window.fetchBucketList = async function fetchBucketList() {
     try {
-        const response = await fetch(`http://127.0.0.1:8503/api/bucketlist`, {
-            method: 'PUT',
+        const category = document.getElementById('category').value;
+        const response = await fetch(`${pythonURI}/api/bucketlist?category=${category}`, {
+            ...fetchOptions,
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(putData)
+            }
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error('Failed to fetch bucket list: ' + response.statusText);
         }
 
         const data = await response.json();
-        console.log('Put response:', data);
+        console.log(data);
+        const bucketList = document.getElementById('bucket-list');
+        bucketList.innerHTML = "";
+
+        data.forEach(item => {
+            const titleItem = document.createElement('h3');
+            titleItem.textContent = `${item['title']} (${item['category']})`;
+            bucketList.appendChild(titleItem);
+
+            const descItem = document.createElement('p');
+            descItem.textContent = `${item['description']}`;
+            bucketList.appendChild(descItem);
+
+            const breakItem = document.createElement('br');
+            bucketList.appendChild(breakItem);
+        });
     } catch (error) {
-        console.error("Error putting data:", error);
+        console.error('Error fetching bucket list:', error);
     }
-} 
+}
+
+window.addBucketListItem = async function addBucketListItem() {
+    const item = document.getElementById('new-bucket-item').value;
+    const desc = document.getElementById('new-bucket-desc').value;
+    const category = document.getElementById('new-bucket-category').value;
+
+    const title = item;
+    const description = desc;
+
+    try {
+        const response = await fetch(`${pythonURI}/api/bucketlist`, {
+            ...fetchOptions,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, description, category })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to add bucket list item: ' + response.statusText);
+        }
+
+        alert('Bucket list item added successfully!');
+        document.getElementById('new-bucket-item').value = ''; // Clear input
+        document.getElementById('new-bucket-desc').value = '';
+        document.getElementById('new-bucket-category').value = '';
+        fetchBucketList(); // Refresh bucket list
+    } catch (error) {
+        console.error('Error adding bucket list item:', error);
+        alert('Error adding bucket list item: ' + error.message);
+    }
+}
 
 async function deleteBucketListItem() {
     const item = document.getElementById('delete-bucket-item').value.trim();
@@ -204,7 +183,7 @@ async function deleteBucketListItem() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ item, category })
+            body: JSON.stringify({ title: item, category: category })
         });
 
         if (!response.ok) {
@@ -220,11 +199,12 @@ async function deleteBucketListItem() {
         alert('Error deleting bucket list item: ' + error.message);
     }
 }
-    document.getElementById('category').addEventListener('change', fetchBucketList);
-    document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
-    document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
-    document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
-    fetchBucketList();
+
+document.getElementById('category').addEventListener('change', fetchBucketList);
+document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
+document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
+document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
+fetchBucketList();
 </script>
 
 <style>

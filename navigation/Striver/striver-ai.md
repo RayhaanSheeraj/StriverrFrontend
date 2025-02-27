@@ -489,6 +489,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
 
         // Log user mood (for debugging or other use)
         console.log("Current User Mood:", userMood);
+        document.getElementById("current-mood-text").textContent = userMood;
     }
 });
 
@@ -583,7 +584,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
     document.getElementById("mood-btn").addEventListener("click", displayMood);
 };
 
-
+displayMood();
 </script>
 
 
@@ -626,6 +627,8 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
       // Provide user feedback
       moodBtn.textContent = "Mood Restored";
       moodBtn.disabled = true;
+
+      document.getElementById("current-mood-text").textContent = "neutral";
     } catch (error) {
       console.error("Error restoring mood:", error);
     }
