@@ -303,7 +303,7 @@ author: Hithin
 </style>
 
 <script type="module">
-
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
     const names = ["Striver"];
     const states = ["Iowa", "California", "New York", "Texas", "Florida", "Nevada", "Ohio", "Michigan"];
@@ -467,7 +467,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
 
         // Send the mood to the server with JWT from cookie
         try {
-            const response = await fetch('http://127.0.0.1:8503/api/mood', {
+            const response = await fetch(`${pythonURI}/api/mood`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -615,7 +615,7 @@ displayMood();
     
     // Send request to backend to erase mood
     try {
-      await fetch('http://127.0.0.1:8503/api/mood/restore', {
+      await fetch(`${pythonURI}/api/mood`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -639,7 +639,7 @@ displayMood();
     
     // Send request to backend to erase mood
     try {
-      await fetch('http://127.0.0.1:8503/api/mood', {
+      await fetch(`${pythonURI}/api/mood`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
