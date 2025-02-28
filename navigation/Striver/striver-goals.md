@@ -136,6 +136,7 @@ window.updateGoalProgress = async function updateGoalProgress() {
         const response = await fetch(`${pythonURI}/api/goals`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
             body: JSON.stringify(putData)
         });
         if (!response.ok) {
