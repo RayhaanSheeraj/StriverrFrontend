@@ -611,7 +611,7 @@ displayMood();
 </style>
 
 <script>
-  async function restoreMood() {
+async function restoreMood() {
     const moodBtn = document.getElementById("mood-btn");
     
     // Send request to backend to erase mood
