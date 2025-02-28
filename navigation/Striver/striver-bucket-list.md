@@ -25,20 +25,6 @@ Explore and manage your bucket list!
 
 <div class="container">
     <div class="form-container">
-        <h2>Select Category</h2>
-        <div>
-            <label for="category">Category:</label>
-            <select id="category">
-                <option value="travel">Travel</option>
-                <option value="adventure">Adventure</option>
-                <option value="personal">Personal</option>
-            </select>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="form-container">
         <h2>Bucket List</h2>
         <ul id="bucket-list"></ul>
     </div>
@@ -67,8 +53,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 
 window.fetchBucketList = async function fetchBucketList() {
     try {
-        const category = document.getElementById('category').value;
-        const response = await fetch(`${pythonURI}/api/bucketlist?category=${category}`, {
+        const response = await fetch(`${pythonURI}/api/bucketlist`, {
             ...fetchOptions,
             method: 'GET',
             headers: {
@@ -207,7 +192,6 @@ window.deleteBucketListItem = async function deleteBucketListItem(id) {
     }
 }
 
-document.getElementById('category').addEventListener('change', fetchBucketList);
 document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
 document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
 document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
