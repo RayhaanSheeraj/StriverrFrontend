@@ -13,8 +13,9 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striverr-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
-    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
+    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step Tracker</a>
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
+    <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
     <a href="/StriverrFrontend/Striver/striver-goals" class="sidebar-btn bottom-btn">🥅 Goals</a>
@@ -22,20 +23,6 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
 
 <h1 style="color:cyan;">Bucket List</h1>
 Explore and manage your bucket list!
-
-<div class="container">
-    <div class="form-container">
-        <h2>Select Category</h2>
-        <div>
-            <label for="category">Category:</label>
-            <select id="category">
-                <option value="travel">Travel</option>
-                <option value="adventure">Adventure</option>
-                <option value="personal">Personal</option>
-            </select>
-        </div>
-    </div>
-</div>
 
 <div class="container">
     <div class="form-container">
@@ -61,46 +48,13 @@ Explore and manage your bucket list!
     </div>
 </div>
 
-<div class="container">
-    <div class="form-container">
-        <h2>Update Bucket List Item</h2>
-        <label for="old-bucket-item">Old Item:</label>
-        <input type="text" id="old-bucket-item" placeholder="Old item" />
-        <label for="updated-bucket-item">New Item:</label>
-        <input type="text" id="updated-bucket-item" placeholder="New item" />
-        <label for="update-bucket-category">Category:</label>
-        <select id="update-bucket-category">
-            <option value="travel">Travel</option>
-            <option value="adventure">Adventure</option>
-            <option value="personal">Personal</option>
-        </select>
-        <button id="update-bucket-item-btn">Update Item</button>
-    </div>
-</div>
-
-<div class="container">
-    <div class="form-container">
-        <h2>Delete Bucket List Item</h2>
-        <label for="delete-bucket-item">Item:</label>
-        <input type="text" id="delete-bucket-item" placeholder="Item to delete" />
-        <label for="delete-bucket-category">Category:</label>
-        <select id="delete-bucket-category">
-            <option value="travel">Travel</option>
-            <option value="adventure">Adventure</option>
-            <option value="personal">Personal</option>
-        </select>
-        <button id="delete-bucket-item-btn">Delete Item</button>
-    </div>
-</div>
-
 <script type="module">
 
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 
 window.fetchBucketList = async function fetchBucketList() {
     try {
-        const category = document.getElementById('category').value;
-        const response = await fetch(`${pythonURI}/api/bucketlist?category=${category}`, {
+        const response = await fetch(`${pythonURI}/api/bucketlist`, {
             ...fetchOptions,
             method: 'GET',
             headers: {
@@ -113,21 +67,43 @@ window.fetchBucketList = async function fetchBucketList() {
         }
 
         const data = await response.json();
-        console.log(data);
         const bucketList = document.getElementById('bucket-list');
         bucketList.innerHTML = "";
 
         data.forEach(item => {
-            const titleItem = document.createElement('h3');
-            titleItem.textContent = `${item['title']} (${item['category']})`;
-            bucketList.appendChild(titleItem);
+            const listItem = document.createElement('li');
+            listItem.style.display = 'flex';
+            listItem.style.alignItems = 'center';
+            listItem.style.justifyContent = 'space-between';
+
+            const titleItem = document.createElement('span');
+            titleItem.textContent = `${item.title} (${item.category})`;
 
             const descItem = document.createElement('p');
-            descItem.textContent = `${item['description']}`;
-            bucketList.appendChild(descItem);
+            descItem.textContent = `${item.description}`;
 
-            const breakItem = document.createElement('br');
-            bucketList.appendChild(breakItem);
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.style.marginLeft = '10px';
+            updateButton.style.padding = '2px 5px';
+            updateButton.style.fontSize = '12px';
+            updateButton.style.width = '60px';
+            updateButton.classList.add('update-btn');
+            updateButton.onclick = () => promptUpdateBucketListItem(item.id, item.title, item.category);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.style.marginLeft = '10px';
+            deleteButton.style.padding = '2px 5px';
+            deleteButton.style.fontSize = '12px';
+            deleteButton.style.width = '60px';
+            deleteButton.onclick = () => deleteBucketListItem(item.id);
+
+            listItem.appendChild(titleItem);
+            listItem.appendChild(descItem);
+            listItem.appendChild(updateButton);
+            listItem.appendChild(deleteButton);
+            bucketList.appendChild(listItem);
         });
     } catch (error) {
         console.error('Error fetching bucket list:', error);
@@ -167,15 +143,34 @@ window.addBucketListItem = async function addBucketListItem() {
     }
 }
 
-async function deleteBucketListItem() {
-    const item = document.getElementById('delete-bucket-item').value.trim();
-    const category = document.getElementById('delete-bucket-category').value.trim();
+window.promptUpdateBucketListItem = async function promptUpdateBucketListItem(id, oldTitle, category) {
+    const newTitle = prompt('Enter new title:', oldTitle);
 
-    if (!item || !category) {
-        alert("Please enter both item and category.");
-        return;
+    if (newTitle) {
+        try {
+            const response = await fetch(`${pythonURI}/api/bucketlist`, {
+                ...fetchOptions,
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id, title: oldTitle, new_title: newTitle, category })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update bucket list item: ' + response.statusText);
+            }
+
+            alert('Bucket list item updated successfully!');
+            fetchBucketList(); // Refresh bucket list
+        } catch (error) {
+            console.error('Error updating bucket list item:', error);
+            alert('Error updating bucket list item: ' + error.message);
+        }
     }
+}
 
+window.deleteBucketListItem = async function deleteBucketListItem(id) {
     try {
         const response = await fetch(`${pythonURI}/api/bucketlist`, {
             ...fetchOptions,
@@ -183,7 +178,7 @@ async function deleteBucketListItem() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ title: item, category: category })
+            body: JSON.stringify({ id })
         });
 
         if (!response.ok) {
@@ -191,8 +186,6 @@ async function deleteBucketListItem() {
         }
 
         alert('Bucket list item deleted successfully!');
-        document.getElementById('delete-bucket-item').value = ''; // Clear input
-        document.getElementById('delete-bucket-category').value = ''; 
         fetchBucketList(); // Refresh bucket list
     } catch (error) {
         console.error('Error deleting bucket list item:', error);
@@ -200,7 +193,6 @@ async function deleteBucketListItem() {
     }
 }
 
-document.getElementById('category').addEventListener('change', fetchBucketList);
 document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
 document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
 document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
@@ -262,6 +254,48 @@ h1, h2 {
 .form-container button:hover {
   background-color: #1A252F;
 }
+
+#bucket-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1A252F;
+  padding: 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
+#bucket-list button {
+  background-color: #E74C3C;
+  color: #ECF0F1;
+  border: none;
+  padding: 2px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px; /* Make the button smaller */
+  width: 60px; /* Make the button smaller horizontally */
+  margin-left: 0; /* Move the button closer */
+  border: 1px solid #28cee8;
+}
+
+#bucket-list button.update-btn {
+  background-color: #1A252F;
+  margin-left: 10px; /* Add some space between buttons */
+  border: 1px solid #28cee8;
+}
+
+#bucket-list button.update-btn:hover {
+  background-color: #2980B9;
+}
+
+#bucket-list span {
+  flex-grow: 1; /* Ensure the text takes up available space */
+}
+
+#bucket-list button:hover {
+  background-color: #C0392B;
+}
+
 /* Sidebar */
 .sidebar {
   position: fixed;
