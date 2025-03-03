@@ -13,8 +13,9 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
     <a href="/StriverrFrontend/Striver/striver-about" class="sidebar-btn">❓ About</a>
     <a href="/StriverrFrontend/Striver/striverr-terms" class="sidebar-btn">📄 Terms</a>
     <a href="/StriverrFrontend/Striver/striver-profile" class="sidebar-btn bottom-btn">👤 Profile</a>
-    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step tracker</a>
+    <a href="/StriverrFrontend/Striver/striver-steps" class="sidebar-btn bottom-btn">Step Tracker</a>
     <a href="/StriverrFrontend/Striver/striver-bucket-list" class="sidebar-btn bottom-btn">Bucket List</a>
+    <a href="/StriverrFrontend/Striver/striver-quotes" class="sidebar-btn bottom-btn">Quotes</a>
     <a href="/StriverrFrontend/Striver/striver-hobbies" class="sidebar-btn bottom-btn">Hobbies</a>
     <a href="/StriverrFrontend/Striver/striver-coolfacts" class="sidebar-btn bottom-btn">Cool Facts</a>
     <a href="/StriverrFrontend/Striver/striver-goals" class="sidebar-btn bottom-btn">🥅 Goals</a>
@@ -22,20 +23,6 @@ author: Hithin, Nikith, Rayhaan, Pradyun, Neil, Kush, Zaiddf
 
 <h1 style="color:cyan;">Bucket List</h1>
 Explore and manage your bucket list!
-
-<div class="container">
-    <div class="form-container">
-        <h2>Select Category</h2>
-        <div>
-            <label for="category">Category:</label>
-            <select id="category">
-                <option value="travel">Travel</option>
-                <option value="adventure">Adventure</option>
-                <option value="personal">Personal</option>
-            </select>
-        </div>
-    </div>
-</div>
 
 <div class="container">
     <div class="form-container">
@@ -67,8 +54,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 
 window.fetchBucketList = async function fetchBucketList() {
     try {
-        const category = document.getElementById('category').value;
-        const response = await fetch(`${pythonURI}/api/bucketlist?category=${category}`, {
+        const response = await fetch(`${pythonURI}/api/bucketlist`, {
             ...fetchOptions,
             method: 'GET',
             headers: {
@@ -207,7 +193,6 @@ window.deleteBucketListItem = async function deleteBucketListItem(id) {
     }
 }
 
-document.getElementById('category').addEventListener('change', fetchBucketList);
 document.getElementById('add-bucket-item-btn').addEventListener('click', addBucketListItem);
 document.getElementById('update-bucket-item-btn').addEventListener('click', putBucketListItem);
 document.getElementById('delete-bucket-item-btn').addEventListener('click', deleteBucketListItem);
