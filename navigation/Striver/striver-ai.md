@@ -515,6 +515,7 @@ document.getElementById('messageBox').addEventListener('keypress', async functio
                 document.getElementById("current-mood-text").textContent = "Error retrieving mood.";
                 document.getElementById("mood-modal").style.display = "block";
             }
+            document.getElementById("current-mood-text").textContent = "neutral";
         }
 
      // Attach event listeners after the DOM has loaded
@@ -612,47 +613,13 @@ displayMood();
 <script>
 async function restoreMood() {
     const moodBtn = document.getElementById("mood-btn");
-    
-    // Send request to backend to erase mood
-    try {
-      await fetch(`${pythonURI}/api/mood`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ action: "erase_mood" }),
-        credentials: 'include'
-      });
-      
-      // Provide user feedback
-      moodBtn.textContent = "Mood Restored";
-      moodBtn.disabled = true;
-
-      document.getElementById("current-mood-text").textContent = "neutral";
-    } catch (error) {
-      console.error("Error restoring mood:", error);
-    }
+    document.getElementById("current-mood-text").textContent = "neutral";
   }
 
   async function deleteMood() {
     const moodBtn = document.getElementById("mood-btn");
-    
-    // Send request to backend to erase mood
-    try {
-      await fetch(`${pythonURI}/api/mood`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: 'include'
-      });
-      
-      // Provide user feedback
-      moodBtn.textContent = "Mood Deleted";
-      moodBtn.disabled = true;
-    } catch (error) {
-      console.error("Error deleting mood:", error);
-    }
+    document.getElementById("current-mood-text").textContent = "Loading...";
+
   }
 </script>
 
