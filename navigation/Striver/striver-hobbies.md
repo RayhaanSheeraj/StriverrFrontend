@@ -204,6 +204,11 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
     }
 
     async function deleteHobby(hobbyName, category) {
+        const confirmation = confirm('Are you sure you want to delete this hobby?');
+        if (!confirmation) {
+            return;
+        }
+
         try {
             const response = await fetch(`${pythonURI}/api/hobby`, {
                 ...fetchOptions,
