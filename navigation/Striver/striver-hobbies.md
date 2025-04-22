@@ -63,7 +63,7 @@ Explore and manage your hobbies!
 <script type="module">
 
 import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
-
+// ChatGPT helped me create javascript code for update and delete buttons rather than forms for each fetch function. These buttons dynamically generate with each hobby item per category.
     async function fetchHobbies() {
         try {
             const category = document.getElementById('category').value;
@@ -237,6 +237,7 @@ import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config
 </script>
 
 <style>
+/* ChatGPT helped me with the styling of the page to make a sleek UI. */
 /* General Styles */
 body {
   font-family: Arial, sans-serif;
